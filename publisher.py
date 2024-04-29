@@ -5,5 +5,5 @@ connection = TEM_comms()
 connection.connect()
 
 while True:
-    connection.send("buffer.status", queue_length=1, free_space=2, upload_rate=3)
+    connection.send("tile.statistics.focus", tile_id="test", focus=11.2)
     time.sleep(1)

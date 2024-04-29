@@ -6,7 +6,7 @@ connection.connect()
 def callback(data):
     print(data)
 
-connection.subscribe("buffer.status", callback)
+connection.subscribe("tile.statistics.focus", callback)
 
 while True:
     pass
