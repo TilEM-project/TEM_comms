@@ -2,9 +2,11 @@ import pydantic
 import json
 
 class BaseMessage(pydantic.BaseModel):
+    model_config = dict(extra="forbid")
+
     def serialize(self):
-        return json.dumps({ key:val for key, val in self.__dict__.items() if not key.startswith("_") and not callable(val) })
+        return self.model_dump_json()
     
     @classmethod
     def deserialize(cls, data):
-        return cls(**json.loads(data))
+        return cls.model_validate_json(data)
