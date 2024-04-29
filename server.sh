@@ -1,0 +1,1 @@
+sudo docker run -t --rm -p 61616:61616 --env ANONYMOUS_LOGIN=true apache/activemq-artemis
