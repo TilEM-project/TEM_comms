@@ -20,6 +20,4 @@ class status(BaseMessage):
     target_temp: float
     device_name: str
     device_model_id: int
-    sensor_model_id: int
     device_sn: str
-    sensor_sn: str
