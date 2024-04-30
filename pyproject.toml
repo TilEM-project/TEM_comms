@@ -10,7 +10,11 @@ requires-python = ">=3.10"
 dependencies = [
   'stomp-py',
   'pydantic',
+  'pyyaml',
 ]
+
+[project.scripts]
+TEM_comm_cli = "TEM_comms.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/AllenInstitute/TEM_comms"
