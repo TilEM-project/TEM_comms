@@ -6,7 +6,7 @@ authors = [
 ]
 description = "The communication library for the next generation TEM system."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
   'stomp-py',
   'pydantic',
