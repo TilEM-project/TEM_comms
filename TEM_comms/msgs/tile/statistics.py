@@ -1,14 +1,14 @@
 from ..base import BaseMessage
 
-class focus(BaseMessage):
+class Focus(BaseMessage):
     tile_id: str
     focus: float
 
-class histogram(BaseMessage):
+class Histogram(BaseMessage):
     tile_id: str
     path: str
 
-class min_max_mean(BaseMessage):
+class MinMaxMean(BaseMessage):
     tile_id: str
     min: int
     max: int

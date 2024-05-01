@@ -1,19 +1,19 @@
 from ..base import BaseMessage
 from . import statistics
 
-class jpeg(BaseMessage):
+class JPEG(BaseMessage):
     tile_id: str
     path: str
 
-class minimap(BaseMessage):
+class Minimap(BaseMessage):
     tile_id: str
     path: str
 
-class processed(BaseMessage):
+class Processed(BaseMessage):
     tile_id: str
     path: str
 
-class raw(BaseMessage):
+class Raw(BaseMessage):
     tile_id: str
     montage_id: str
     path: str
@@ -21,7 +21,7 @@ class raw(BaseMessage):
     column: int
     overlap: float
 
-class transform(BaseMessage):
+class Transform(BaseMessage):
     tile_id: str
     rotation: float
     x: float

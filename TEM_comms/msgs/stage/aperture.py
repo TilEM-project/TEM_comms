@@ -1,10 +1,10 @@
 from ..base import BaseMessage
 
-class command(BaseMessage):
+class Command(BaseMessage):
     aperture_id: int | None = None
     calibrate: bool = False
 
-class status(BaseMessage):
+class Status(BaseMessage):
     current_aperture: int
     calibrated: bool
     error: str = ""

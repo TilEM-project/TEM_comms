@@ -1,11 +1,11 @@
 from ..base import BaseMessage
 
-class command(BaseMessage):
+class Command(BaseMessage):
     x: int | None = None
     y: int | None = None
     calibrate: bool = False
 
-class status(BaseMessage):
+class Status(BaseMessage):
     x: int
     y: int
     in_motion: bool
