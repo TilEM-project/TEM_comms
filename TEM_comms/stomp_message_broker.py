@@ -20,8 +20,9 @@ class StompMessageBroker(MessageBroker):
         self._callbacks: Dict[str, List[Callable]] = {}
         self._connection.set_listener("listener", StompListener(self._handle_message))
         self._logger = logger if logger is not None else self._configure_logging()
-
-    def _configure_logging(self) -> logging.Logger:
+    
+    @staticmethod
+    def _configure_logging() -> logging.Logger:
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.INFO)
         return logger
@@ -47,35 +48,6 @@ class StompMessageBroker(MessageBroker):
                 f"Could not connect to server: {e}"
             )
 
-    def add_topic(self, topic_name: str, message_handler: Callable):
-        """
-        Add a new topic to the StompClient.
-
-        Args:
-            topic_name (str): The name of the topic to add.
-            message_handler (Callable): The class representing the message for the topic.
-        """
-        if topic_name in self._topics:
-            self._logger.warning(f"Topic {topic_name} is already registered.")
-            return
-        self._topics[topic_name] = message_handler
-        self._callbacks[topic_name] = []
-        self._logger.info(f"Added new topic {topic_name}.")
-
-    def remove_topic(self, topic_name: str):
-        """
-        Removes a topic from the StompClient's internal topic list.
-
-        Args:
-            topic_name (str): The name of the topic to be removed.
-        """
-        if topic_name in self._topics:
-            del self._topics[topic_name]
-            del self._callbacks[topic_name]
-            self._logger.info(f"Removed topic {topic_name}.")
-        else:
-            self._logger.warning(f"Topic {topic_name} not found.")
-
     def send(self, topic: str, **data):
         """
         Sends data to the specified topic.
@@ -88,14 +60,14 @@ class StompMessageBroker(MessageBroker):
             exceptions.NoSuchTopicException: If the specified topic is not defined.
 
         """
-        serialized_data = self.serialize_data(topic, **data)
+        self._ensure_topic_exists(topic)
+        serialized_data = self._topics[topic](**data).serialize()
         self._connection.send(destination=topic, body=serialized_data)
         self._logger.debug(f"Sent data to {topic}: {serialized_data}")
 
-    def serialize_data(self, topic: str, **data):
+    def _ensure_topic_exists(self, topic: str):
         if topic not in self._topics:
             raise exceptions.NoSuchTopicException(f"Topic {topic} not defined.")
-        return self._topics[topic](**data).serialize()
 
     def _handle_message(self, message_frame: Frame):
         topic = message_frame.headers["subscription"]
@@ -118,31 +90,18 @@ class StompMessageBroker(MessageBroker):
             NoSuchTopicException: If the specified topic is not defined.
 
         """
-        if topic not in self._topics:
-            raise exceptions.NoSuchTopicException(f"Topic {topic} not defined.")
+        self._ensure_topic_exists(topic)
         if topic not in self._callbacks:
-            self._callbacks[topic] = []  # Initialize empty list if not present
-        if not self._callbacks[topic]:
+            self._callbacks[topic] = []
             self._connection.subscribe(destination=topic, id=topic)
         self._callbacks[topic].append(callback)
         self._logger.info(f"Subscribed to {topic} with {callback.__name__}.")
 
     def unsubscribe(self, topic: str):
-        """
-        Unsubscribes from a topic, using the subscription topic stored in the callbacks list.
-
-        Args:
-            topic (str): The topic to unsubscribe from.
-        """
-        if topic in self._callbacks and self._callbacks[topic]:
-            for subscription_id in self._callbacks[topic]:
-                self._connection.unsubscribe(id=subscription_id)
-                self._logger.info(
-                    f"Unsubscribed from {topic} with ID {subscription_id}."
-                )
-            del self._callbacks[topic]
-        else:
-            self._logger.warning(f"No active subscriptions for topic {topic}.")
+        self._ensure_topic_exists(topic)
+        self._connection.unsubscribe(id=topic)
+        self._logger.info(f"Unsubscribed from {topic}.")
+        del self._callbacks[topic]
 
     def disconnect(self):
         if self._connection.is_connected():
@@ -156,4 +115,3 @@ class StompListener(stomp.ConnectionListener):
 
     def on_message(self, frame):
         self.callback(frame)
-

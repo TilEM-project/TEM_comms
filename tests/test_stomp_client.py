@@ -12,8 +12,9 @@ class MockMessage(BaseMessage):
 @pytest.fixture
 def broker():
     with patch("TEM_comms.logging.setup_logging") as mock_logging:
+        topics = {"topic1": MockMessage}
         yield StompMessageBroker(
-            host="localhost", port=61613, logger=mock_logging.Logger()
+            host="localhost", port=61613, logger=mock_logging.Logger(), topics=topics
         )
 
 
@@ -62,22 +63,6 @@ def test_connect_failure(broker, username, password):
 
 
 @pytest.mark.parametrize(
-    "topic_name, message_handler, expected_log",
-    [
-        ("topic1", MockMessage, "Added new topic topic1."),
-    ],
-    ids=["add-new-topic"],
-)
-def test_add_topic(broker, topic_name, message_handler, expected_log):
-    # Act
-    broker.add_topic(topic_name, message_handler)
-
-    # Assert
-    assert broker._topics[topic_name] == message_handler
-    broker._logger.info.assert_called_with(expected_log)
-
-
-@pytest.mark.parametrize(
     "topic, data, expected_serialized_data",
     [
         ("topic1", {"field1": "value"}, '{"field1":"value"}'),
@@ -90,12 +75,9 @@ def test_send(broker, topic, data, expected_serialized_data):
     broker._connection.send = MagicMock()
 
     # Act
-    print(topic, data)
     broker.send(topic, **data)
 
     # Assert
-    serialized_data = broker.serialize_data(topic, **data)
-    print(serialized_data)
     broker._connection.send.assert_called_with(
         destination=topic, body=expected_serialized_data
     )
@@ -158,7 +140,7 @@ def test_subscribe_no_such_topic(broker, topic):
 @pytest.mark.parametrize(
     "topic, expected_log",
     [
-        ("topic1", "Unsubscribed from topic1 with ID topic1."),
+        ("topic1", "Unsubscribed from topic1."),
     ],
     ids=["unsubscribe-existing-topic"],
 )
@@ -173,26 +155,6 @@ def test_unsubscribe(broker, topic, expected_log):
     # Assert
     assert topic not in broker._callbacks
     broker._connection.unsubscribe.assert_called_with(id=topic)
-    broker._logger.info.assert_called_with(expected_log)
-
-
-@pytest.mark.parametrize(
-    "topic_name, expected_log",
-    [
-        ("topic1", "Removed topic topic1."),
-    ],
-    ids=["remove-existing-topic"],
-)
-def test_remove_topic(broker, topic_name, expected_log):
-    # Arrange
-    broker._topics[topic_name] = MockMessage
-    broker._callbacks[topic_name] = []
-
-    # Act
-    broker.remove_topic(topic_name)
-
-    # Assert
-    assert topic_name not in broker._topics
     broker._logger.info.assert_called_with(expected_log)
 
 

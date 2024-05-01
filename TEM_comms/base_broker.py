@@ -16,13 +16,9 @@ class MessageBroker(ABC):
         pass
 
     @abstractmethod
+    def unsubscribe(self, topic: str):
+        pass
+
+    @abstractmethod
     def send(self, topic: str, message: dict):
-        pass
-
-    @abstractmethod
-    def add_topic(self, topic_name: str, message_class: Callable):
-        pass
-
-    @abstractmethod
-    def remove_topic(self, topic_name: str):
         pass
