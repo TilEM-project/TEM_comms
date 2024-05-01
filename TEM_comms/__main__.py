@@ -1,4 +1,4 @@
-from . import TEM_comms
+from TEM_comms.stomp_message_broker import StompMessageBroker as TEM_comms
 import argparse
 import yaml
 
