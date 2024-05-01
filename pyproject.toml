@@ -7,11 +7,10 @@ authors = [
 description = "The communication library for the next generation TEM system."
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = [
-  'stomp-py',
-  'pydantic',
-  'pyyaml',
-]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {dev = { file = ["dev-requirements.txt"] }}
 
 [project.scripts]
 TEM_comm_cli = "TEM_comms.__main__:main"
