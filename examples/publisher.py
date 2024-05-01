@@ -1,7 +1,11 @@
-from TEM_comms import TEM_comms
+from TEM_comms.stomp_message_broker import StompMessageBroker
 import time
+from TEM_comms.logging import setup_logging
+from TEM_comms.msgs import topics
 
-connection = TEM_comms()
+logger = setup_logging("publisher")
+
+connection = StompMessageBroker(topics=topics, logger=logger)
 connection.connect()
 
 while True:
