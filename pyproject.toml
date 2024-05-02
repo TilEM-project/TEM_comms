@@ -7,6 +7,7 @@ authors = [
 description = "The communication library for the next generation TEM system."
 readme = "README.md"
 requires-python = ">=3.10"
+dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
