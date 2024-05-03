@@ -1,6 +1,9 @@
 import stomp
 from . import exceptions
 from . import msgs
+import importlib.metadata
+
+__version__ = importlib.metadata.version("TEM_comms")
 
 class TEM_comms:
     topics = {
@@ -27,7 +30,8 @@ class TEM_comms:
         "tile.transform": msgs.tile.transform,
     }
 
-    def __init__(self, host="127.0.0.1", port=61616):
+    def __init__(self, service, host="127.0.0.1", port=61616):
+        self.service = service
         self.connection = stomp.Connection12([(host, port)])
         self.connection.set_listener("listener", TEM_comm_listener(self.callback)) 
         self.callbacks = { topic:[] for topic in self.topics.keys() }
@@ -38,9 +42,11 @@ class TEM_comms:
     def send(self, topic, **data):
         if topic not in self.topics:
             raise exceptions.NoSuchTopicException
-        self.connection.send(topic, self.topics[topic](**data).serialize())
+        self.connection.send(topic, self.topics[topic](**data).serialize(), headers=dict(service=self.service, version=__version__))
 
     def callback(self, frame):
+        if frame.headers.get("version") != __version__:
+            raise exceptions.VersionMismatchException
         topic = frame.headers["subscription"]
         data = self.topics[topic].deserialize(frame.body)
         for callback in self.callbacks[topic]:
