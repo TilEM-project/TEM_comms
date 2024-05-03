@@ -34,7 +34,7 @@ class TEM_comms:
         self.service = service
         self.connection = stomp.Connection12([(host, port)])
         self.connection.set_listener("listener", TEM_comm_listener(self.callback)) 
-        self.callbacks = { topic:[] for topic in self.topics.keys() }
+        self.callbacks = {}
     
     def connect(self, username=None, password=None):
         self.connection.connect(username=username, password=password)
@@ -49,15 +49,14 @@ class TEM_comms:
             raise exceptions.VersionMismatchException
         topic = frame.headers["subscription"]
         data = self.topics[topic].deserialize(frame.body)
-        for callback in self.callbacks[topic]:
-            callback(data)
+        self.callbacks[topic](data)
     
     def subscribe(self, topic, callback):
         if topic not in self.topics:
             raise exceptions.NoSuchTopicException
-        if not len(self.callbacks[topic]):
+        if topic not in self.callbacks:
             self.connection.subscribe(topic, topic)
-        self.callbacks[topic].append(callback)
+        self.callbacks[topic] = callback
 
 
 class TEM_comm_listener(stomp.ConnectionListener):
