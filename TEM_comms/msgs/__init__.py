@@ -1,8 +1,8 @@
-from . import buffer
-from . import camera
-from . import scope
-from . import stage
-from . import tile
+from TEM_comms.msgs import buffer
+from TEM_comms.msgs import camera
+from TEM_comms.msgs import scope
+from TEM_comms.msgs import stage
+from TEM_comms.msgs import tile
 
 topics = {
     "buffer.status": buffer.Status,
