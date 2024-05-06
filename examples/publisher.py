@@ -10,7 +10,7 @@ logger = setup_logging("publisher")
 host = os.environ.get("ARTEMIS_HOST", "127.0.0.1")
 port = int(os.environ.get("ARTEMIS_PORT", 61613))
 
-connection = TEMComms(host=host, port=port, topics=topics, logger=logger)
+connection = TEMComms("Publisher", host=host, port=port, topics=topics, logger=logger)
 connection.connect(username="admin", password="password")
 
 while True:

@@ -15,7 +15,7 @@ def broker():
     with patch("TEM_comms.logging.setup_logging") as mock_logging:
         topics = {"topic1": MockMessage}
         yield TEMComms(
-            host="localhost", port=61613, logger=mock_logging.Logger(), topics=topics
+            "test", host="localhost", port=61613, logger=mock_logging.Logger(), topics=topics
         )
 
 

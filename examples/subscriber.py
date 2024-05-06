@@ -14,7 +14,7 @@ def handle_focus_message(message):
     logger.info(f"Received focus message: {message}")
 
 
-connection = TEMComms(host=host, port=port, topics=topics, logger=logger)
+connection = TEMComms("Subscriber", host=host, port=port, topics=topics, logger=logger)
 connection.connect(username="admin", password="password")
 connection.subscribe("tile.statistics.focus", handle_focus_message)
 

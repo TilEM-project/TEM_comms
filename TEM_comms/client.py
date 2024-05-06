@@ -5,22 +5,27 @@ import stomp
 from typing import Callable, Dict, List
 from stomp.utils import Frame
 import stomp.exception
+import importlib.metadata
 
 from . import exceptions
 
+
+__version__ = importlib.metadata.version("TEM_comms")
 
 
 class TEMComms:
     def __init__(
         self,
+        service: str,
         host: str = "127.0.0.1",
         port: int = 61616,
         topics: Dict[str, Callable] = None,
         logger: logging.Logger = None,
     ):
+        self._service = service
         self._connection = stomp.Connection12([(host, port)],  heartbeats=(10000, 10000))
         self._topics = topics if topics is not None else {}
-        self._callbacks: Dict[str, List[Callable]] = {}
+        self._callbacks: Dict[str, Callable] = {}
         self._connection.set_listener("listener", TEMCommsListener(self._handle_message))
         self._logger = logger if logger is not None else self._configure_logging()
 
@@ -78,7 +83,8 @@ class TEMComms:
         """
         self._ensure_topic_exists(topic)
         serialized_data = self._topics[topic](**data).serialize()
-        self._connection.send(destination=topic, body=serialized_data)
+        headers = dict(service=self._service, version=__version__)
+        self._connection.send(destination=topic, body=serialized_data, headers=headers)
         self._logger.debug(f"Sent data to {topic}: {serialized_data}")
 
     def _ensure_topic_exists(self, topic: str):
@@ -86,13 +92,14 @@ class TEMComms:
             raise exceptions.NoSuchTopicException(f"Topic {topic} not defined.")
 
     def _handle_message(self, message_frame: Frame):
+        if message_frame.headers.get("version") != __version__:
+            raise exceptions.VersionMismatchException
         topic = message_frame.headers["subscription"]
         if topic not in self._topics:
             self._logger.warning(f"Received message for unregistered topic: {topic}")
             return
         message_data = self._topics[topic].deserialize(message_frame.body)
-        for callback in self._callbacks[topic]:
-            callback(message_data)
+        self._callbacks[topic](message_data)
 
     def subscribe(self, topic: str, callback: Callable):
         """
@@ -108,9 +115,8 @@ class TEMComms:
         """
         self._ensure_topic_exists(topic)
         if topic not in self._callbacks:
-            self._callbacks[topic] = []
             self._connection.subscribe(destination=topic, id=topic)
-        self._callbacks[topic].append(callback)
+        self._callbacks[topic] = callback
         self._logger.info(f"Subscribed to {topic} with {callback.__name__}.")
 
     def unsubscribe(self, topic: str):
