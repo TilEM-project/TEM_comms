@@ -1,4 +1,4 @@
-from TEM_comms.msgs.base import BaseMessage
+from ..base import BaseMessage
 
 class Command(BaseMessage):
     angle_x: float | None = None

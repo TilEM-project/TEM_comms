@@ -1,4 +1,4 @@
-from TEM_comms.msgs.base import BaseMessage
+from .base import BaseMessage
 
 class Command(BaseMessage):
     focus: int | None = None

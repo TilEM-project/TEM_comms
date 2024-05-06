@@ -6,7 +6,7 @@ from typing import Callable, Dict, List
 from stomp.utils import Frame
 import stomp.exception
 
-from TEM_comms import exceptions
+from . import exceptions
 
 
 

@@ -1,5 +1,5 @@
-from TEM_comms.msgs.base import BaseMessage
-from TEM_comms.msgs.tile import statistics
+from ..base import BaseMessage
+from . import statistics
 
 
 class JPEG(BaseMessage):

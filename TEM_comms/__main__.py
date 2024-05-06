@@ -1,4 +1,4 @@
-from TEM_comms.client import TEMComms
+from .client import TEMComms
 import argparse
 import yaml
 
