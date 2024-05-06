@@ -4,7 +4,6 @@ from pydantic import model_validator
 
 class command(BaseMessage):
     focus: int | None = None
-    aperture: Literal["lowmag", "highmag"] | None = None
     mag_mode: Literal["LM", "MAG1", "MAG2"] | None = None
     mag: int | None = None
 
