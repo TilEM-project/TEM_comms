@@ -8,10 +8,9 @@ class command(BaseMessage):
     mag: int | None = None
 
     @model_validator(mode="after")
-    @classmethod
-    def check_mag(cls, data):
-        assert (data.mag_mode is None) == (data.mag is None)
-        return data
+    def check_mag(self):
+        assert (self.mag_mode is None) == (self.mag is None)
+        return self
 
 
 class status(BaseMessage):
