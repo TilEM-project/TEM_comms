@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from stomp.exception import ConnectFailedException
-from TEM_comms.stomp_message_broker import StompMessageBroker
+from TEM_comms.client import TEMComms
 from TEM_comms.exceptions import NoSuchTopicException
 from TEM_comms.msgs.base import BaseMessage
 
@@ -9,11 +9,12 @@ from TEM_comms.msgs.base import BaseMessage
 class MockMessage(BaseMessage):
     field1: str
 
+
 @pytest.fixture
 def broker():
     with patch("TEM_comms.logging.setup_logging") as mock_logging:
         topics = {"topic1": MockMessage}
-        yield StompMessageBroker(
+        yield TEMComms(
             host="localhost", port=61613, logger=mock_logging.Logger(), topics=topics
         )
 
@@ -53,13 +54,17 @@ def test_connect_failure(broker, username, password):
     broker._connection.connect = MagicMock(
         side_effect=ConnectFailedException("Connection failed")
     )
+    retry_limit = 1
+    broker._logger.error = MagicMock()
 
     # Act & Assert
     with pytest.raises(
         ConnectFailedException, match="Could not connect to server: Connection failed"
     ):
-        broker.connect(username=username, password=password)
-    broker._logger.error.assert_called_once()
+        broker.connect(username=username, password=password, retry_limit=retry_limit)
+
+    # Assert the logger was called the same number of times as the retry limit
+    assert broker._logger.error.call_count == retry_limit
 
 
 @pytest.mark.parametrize(

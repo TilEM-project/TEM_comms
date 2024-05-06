@@ -1,4 +1,4 @@
-from TEM_comms.stomp_message_broker import StompMessageBroker as TEM_comms
+from TEM_comms.client import TEMComms
 import argparse
 import yaml
 
@@ -34,7 +34,7 @@ def main():
         print("Most also specify topic to publish data to.")
         return
     
-    connection = TEM_comms(args.host, args.port)
+    connection = TEMComms(args.host, args.port)
     connection.connect(args.username, args.password)
     
     if args.publish:

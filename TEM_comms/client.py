@@ -1,13 +1,16 @@
+import logging
+import time 
+
 import stomp
 from typing import Callable, Dict, List
 from stomp.utils import Frame
 import stomp.exception
+
 from TEM_comms import exceptions
-from TEM_comms.base_broker import MessageBroker
-import logging
 
 
-class StompMessageBroker(MessageBroker):
+
+class TEMComms:
     def __init__(
         self,
         host: str = "127.0.0.1",
@@ -15,19 +18,24 @@ class StompMessageBroker(MessageBroker):
         topics: Dict[str, Callable] = None,
         logger: logging.Logger = None,
     ):
-        self._connection = stomp.Connection12([(host, port)])
+        self._connection = stomp.Connection12([(host, port)],  heartbeats=(10000, 10000))
         self._topics = topics if topics is not None else {}
         self._callbacks: Dict[str, List[Callable]] = {}
-        self._connection.set_listener("listener", StompListener(self._handle_message))
+        self._connection.set_listener("listener", TEMCommsListener(self._handle_message))
         self._logger = logger if logger is not None else self._configure_logging()
-    
+
     @staticmethod
     def _configure_logging() -> logging.Logger:
         logger = logging.getLogger(__name__)
         logger.setLevel(logging.INFO)
         return logger
 
-    def connect(self, username: str = None, password: str = None):
+    def connect(
+        self,
+        username: str = None,
+        password: str = None,
+        retry_limit: int = 8,
+    ):
         """
         Connects to the STOMP server using the provided username and password.
 
@@ -39,14 +47,22 @@ class StompMessageBroker(MessageBroker):
             stomp.exception.ConnectFailedException: If the connection to the server fails.
 
         """
-        try:
-            self._connection.connect(username=username, password=password, wait=True)
-            self._logger.info("Connected to STOMP server.")
-        except stomp.exception.ConnectFailedException as e:
-            self._logger.error(f"Connection failed: {e}")
-            raise stomp.exception.ConnectFailedException(
-                f"Could not connect to server: {e}"
-            )
+        retries = 0
+        while retries < retry_limit:
+            try:
+                self._connection.connect(
+                    username=username, password=password, wait=True
+                )
+                self._logger.info("Connected to STOMP server.")
+                break
+            except stomp.exception.ConnectFailedException as e:
+                self._logger.error(f"Connection failed: {e}. Attempting to reconnect.")
+                retries += 1
+                time.sleep(1)
+                if retries == retry_limit:
+                    raise stomp.exception.ConnectFailedException(
+                        f"Could not connect to server: {e}"
+                    ) from e
 
     def send(self, topic: str, **data):
         """
@@ -109,7 +125,7 @@ class StompMessageBroker(MessageBroker):
             self._logger.info("Disconnected from STOMP server.")
 
 
-class StompListener(stomp.ConnectionListener):
+class TEMCommsListener(stomp.ConnectionListener): 
     def __init__(self, callback: Callable):
         self.callback = callback
 
