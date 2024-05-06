@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import MagicMock, patch
 from stomp.exception import ConnectFailedException
-from TEM_comms.client import TEMComms
+from TEM_comms.client import TEMComms, __version__
 from TEM_comms.exceptions import NoSuchTopicException
 from TEM_comms.msgs.base import BaseMessage
 
@@ -11,7 +11,7 @@ class MockMessage(BaseMessage):
 
 
 @pytest.fixture
-def broker():
+def tem_comm_client():
     with patch("TEM_comms.logging.setup_logging") as mock_logging:
         topics = {"topic1": MockMessage}
         yield TEMComms(
@@ -27,18 +27,18 @@ def broker():
     ],
     ids=["no-auth", "with-auth"],
 )
-def test_connect(broker, username, password, expected_log):
+def test_connect(tem_comm_client, username, password, expected_log):
     # Arrange
-    broker._connection.connect = MagicMock()
+    tem_comm_client._connection.connect = MagicMock()
 
     # Act
-    broker.connect(username=username, password=password)
+    tem_comm_client.connect(username=username, password=password)
 
     # Assert
-    broker._connection.connect.assert_called_with(
+    tem_comm_client._connection.connect.assert_called_with(
         username=username, password=password, wait=True
     )
-    broker._logger.info.assert_called_with(expected_log)
+    tem_comm_client._logger.info.assert_called_with(expected_log)
 
 
 @pytest.mark.parametrize(
@@ -49,22 +49,22 @@ def test_connect(broker, username, password, expected_log):
     ],
     ids=["connect-fail-no-auth", "connect-fail-with-auth"],
 )
-def test_connect_failure(broker, username, password):
+def test_connect_failure(tem_comm_client, username, password):
     # Arrange
-    broker._connection.connect = MagicMock(
+    tem_comm_client._connection.connect = MagicMock(
         side_effect=ConnectFailedException("Connection failed")
     )
     retry_limit = 1
-    broker._logger.error = MagicMock()
+    tem_comm_client._logger.error = MagicMock()
 
     # Act & Assert
     with pytest.raises(
         ConnectFailedException, match="Could not connect to server: Connection failed"
     ):
-        broker.connect(username=username, password=password, retry_limit=retry_limit)
+        tem_comm_client.connect(username=username, password=password, retry_limit=retry_limit)
 
     # Assert the logger was called the same number of times as the retry limit
-    assert broker._logger.error.call_count == retry_limit
+    assert tem_comm_client._logger.error.call_count == retry_limit
 
 
 @pytest.mark.parametrize(
@@ -74,23 +74,24 @@ def test_connect_failure(broker, username, password):
     ],
     ids=["send-data"],
 )
-def test_send(broker, topic, data, expected_serialized_data):
+def test_send(tem_comm_client, topic, data, expected_serialized_data):
+    
+    
+    expected_headers = {"service": "test", "version": __version__}
     # Arrange
-    broker._topics[topic] = MockMessage
-    broker._connection.send = MagicMock()
+    tem_comm_client._topics[topic] = MockMessage
+    tem_comm_client._connection.send = MagicMock()
 
     # Act
-    broker.send(topic, **data)
+    tem_comm_client.send(topic, **data)
 
     # Assert
-    broker._connection.send.assert_called_with(
-        destination=topic, body=expected_serialized_data
+    tem_comm_client._connection.send.assert_called_with(
+        destination=topic, body=expected_serialized_data, headers=expected_headers
     )
-    broker._logger.debug.assert_called_with(
+    tem_comm_client._logger.debug.assert_called_with(
         f"Sent data to {topic}: {expected_serialized_data}"
     )
-
-
 @pytest.mark.parametrize(
     "topic, data",
     [
@@ -98,10 +99,10 @@ def test_send(broker, topic, data, expected_serialized_data):
     ],
     ids=["send-data-no-such-topic"],
 )
-def test_send_no_such_topic(broker, topic, data):
+def test_send_no_such_topic(tem_comm_client, topic, data):
     # Act & Assert
     with pytest.raises(NoSuchTopicException, match=f"Topic {topic} not defined."):
-        broker.send(topic, **data)
+        tem_comm_client.send(topic, **data)
 
 
 @pytest.mark.parametrize(
@@ -111,19 +112,19 @@ def test_send_no_such_topic(broker, topic, data):
     ],
     ids=["subscribe-new-topic"],
 )
-def test_subscribe(broker, topic, callback_name, expected_log):
+def test_subscribe(tem_comm_client, topic, callback_name, expected_log):
     # Arrange
-    broker._topics[topic] = MockMessage
+    tem_comm_client._topics[topic] = MockMessage
     callback = MagicMock(__name__=callback_name)
-    broker._connection.subscribe = MagicMock()
+    tem_comm_client._connection.subscribe = MagicMock()
 
     # Act
-    broker.subscribe(topic, callback)
+    tem_comm_client.subscribe(topic, callback)
 
     # Assert
-    assert callback in broker._callbacks[topic]
-    broker._connection.subscribe.assert_called_with(destination=topic, id=topic)
-    broker._logger.info.assert_called_with(expected_log)
+    assert tem_comm_client._callbacks[topic] == callback
+    tem_comm_client._connection.subscribe.assert_called_with(destination=topic, id=topic)
+    tem_comm_client._logger.info.assert_called_with(expected_log)
 
 
 @pytest.mark.parametrize(
@@ -133,13 +134,13 @@ def test_subscribe(broker, topic, callback_name, expected_log):
     ],
     ids=["subscribe-no-such-topic"],
 )
-def test_subscribe_no_such_topic(broker, topic):
+def test_subscribe_no_such_topic(tem_comm_client, topic):
     # Arrange
     callback = MagicMock()
 
     # Act & Assert
     with pytest.raises(NoSuchTopicException, match=f"Topic {topic} not defined."):
-        broker.subscribe(topic, callback)
+        tem_comm_client.subscribe(topic, callback)
 
 
 @pytest.mark.parametrize(
@@ -149,28 +150,28 @@ def test_subscribe_no_such_topic(broker, topic):
     ],
     ids=["unsubscribe-existing-topic"],
 )
-def test_unsubscribe(broker, topic, expected_log):
+def test_unsubscribe(tem_comm_client, topic, expected_log):
     # Arrange
-    broker._callbacks[topic] = ["topic1"]
-    broker._connection.unsubscribe = MagicMock()
+    tem_comm_client._callbacks[topic] = ["topic1"]
+    tem_comm_client._connection.unsubscribe = MagicMock()
 
     # Act
-    broker.unsubscribe(topic)
+    tem_comm_client.unsubscribe(topic)
 
     # Assert
-    assert topic not in broker._callbacks
-    broker._connection.unsubscribe.assert_called_with(id=topic)
-    broker._logger.info.assert_called_with(expected_log)
+    assert topic not in tem_comm_client._callbacks
+    tem_comm_client._connection.unsubscribe.assert_called_with(id=topic)
+    tem_comm_client._logger.info.assert_called_with(expected_log)
 
 
-def test_disconnect(broker):
+def test_disconnect(tem_comm_client):
     # Arrange
-    broker._connection.is_connected = MagicMock(return_value=True)
-    broker._connection.disconnect = MagicMock()
+    tem_comm_client._connection.is_connected = MagicMock(return_value=True)
+    tem_comm_client._connection.disconnect = MagicMock()
 
     # Act
-    broker.disconnect()
+    tem_comm_client.disconnect()
 
     # Assert
-    broker._connection.disconnect.assert_called_once()
-    broker._logger.info.assert_called_with("Disconnected from STOMP server.")
+    tem_comm_client._connection.disconnect.assert_called_once()
+    tem_comm_client._logger.info.assert_called_with("Disconnected from STOMP server.")
