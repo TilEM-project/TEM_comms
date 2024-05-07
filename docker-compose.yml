@@ -1,0 +1,37 @@
+services:
+  artemis:
+    image: apache/activemq-artemis
+    env_file:
+      - dev.env
+    ports:
+      - 8161:8161 # Web Console
+      - 61613:61613 # STOMP
+    volumes:
+      - data:/var/lib/artemis/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8161/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+
+  publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile.publisher
+    depends_on:
+      - artemis
+    env_file:
+      - dev.env
+
+  subscriber:
+    build:
+      context: .
+      dockerfile: Dockerfile.subscriber
+    depends_on:
+      - artemis
+    env_file:
+      - dev.env
+
+volumes:
+  data:

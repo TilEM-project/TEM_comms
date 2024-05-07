@@ -2,7 +2,7 @@ from .base import BaseMessage
 from typing import Literal
 from pydantic import model_validator
 
-class command(BaseMessage):
+class Command(BaseMessage):
     focus: int | None = None
     mag_mode: Literal["LM", "MAG1", "MAG2"] | None = None
     mag: int | None = None
@@ -13,7 +13,7 @@ class command(BaseMessage):
         return self
 
 
-class status(BaseMessage):
+class Status(BaseMessage):
     focus: int
     aperture: str | None
     mag_mode: str

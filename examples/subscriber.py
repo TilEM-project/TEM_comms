@@ -1,12 +1,22 @@
-from TEM_comms import TEM_comms
+import os
 
-connection = TEM_comms('subscriber')
-connection.connect()
+from TEM_comms.client import TEMComms
+from TEM_comms.msgs import topics
+from TEM_comms.logging import setup_logging
 
-def callback(data):
-    print(data)
+logger = setup_logging("subscriber")
 
-connection.subscribe("tile.statistics.focus", callback)
+host = os.environ.get("ARTEMIS_HOST", "127.0.0.1")
+port = int(os.environ.get("ARTEMIS_PORT", 61613))
+
+
+def handle_focus_message(message):
+    logger.info(f"Received focus message: {message}")
+
+
+connection = TEMComms("Subscriber", host=host, port=port, topics=topics, logger=logger)
+connection.connect(username="admin", password="password")
+connection.subscribe("tile.statistics.focus", handle_focus_message)
 
 while True:
     pass

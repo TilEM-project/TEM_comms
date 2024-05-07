@@ -1,18 +1,18 @@
 from .base import BaseMessage
 
-class command(BaseMessage):
+class Command(BaseMessage):
     tile_id: str
 
-class image(BaseMessage):
+class Image(BaseMessage):
     tile_id: str
     path: str
 
-class settings(BaseMessage):
+class Settings(BaseMessage):
     exposure: float | None = None
     width: int | None = None
     height: int | None = None
 
-class status(BaseMessage):
+class Status(BaseMessage):
     exposure: float
     width: int
     height: int

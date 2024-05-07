@@ -1,5 +1,5 @@
 import pydantic
-import json
+
 
 class BaseMessage(pydantic.BaseModel):
     model_config = dict(extra="forbid")
