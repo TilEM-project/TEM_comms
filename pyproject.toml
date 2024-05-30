@@ -11,6 +11,20 @@ dependencies = [
   "pigeon-client",
   "pydantic",
 ]
+license = {text = "BSD 3 Clause"}
+classifiers = [
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
 
 [project.entry-points."pigeon.msgs"]
 msgs = "TEM_comms:msgs"
+
+[project.urls]
+Homepage = "https://github.com/AllenInstitute/TEM_comms"
+Documentation = "https://alleninstitute.github.io/TEM_architecture/topics.html"
+Repository = "https://github.com/AllenInstitute/TEM_comms"
+Issues = "https://github.com/AllenInstitute/TEM_comms/issues"
