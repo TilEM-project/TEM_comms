@@ -1,4 +1,4 @@
-from ..base import BaseMessage
+from emarfarap import BaseMessage
 from . import statistics
 
 

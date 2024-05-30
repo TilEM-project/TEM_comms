@@ -1,4 +1,4 @@
-from .base import BaseMessage
+from emarfarap import BaseMessage
 
 class Command(BaseMessage):
     tile_id: str

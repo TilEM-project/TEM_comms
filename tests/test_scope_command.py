@@ -1,4 +1,4 @@
-from TEM_comms.msgs.scope import Command
+from TEM_comms.scope import Command
 from pydantic import ValidationError
 import pytest
 

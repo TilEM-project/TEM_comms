@@ -1,4 +1,4 @@
-from ..base import BaseMessage
+from emarfarap import BaseMessage
 
 class Command(BaseMessage):
     angle_x: float | None = None

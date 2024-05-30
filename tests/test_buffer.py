@@ -1,7 +1,7 @@
 import re
 
 import pytest
-from TEM_comms.msgs.buffer import Status
+from TEM_comms.buffer import Status
 
 from pydantic import ValidationError
 

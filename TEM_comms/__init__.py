@@ -1,1 +1,37 @@
-from .client import TEMComms
+from . import buffer
+from . import camera
+from . import scope
+from . import stage
+from . import tile
+
+import importlib.metadata
+
+
+__version__ = importlib.metadata.version("TEM_comms")
+
+topics = {
+    "buffer.status": buffer.Status,
+    "camera.command": camera.Command,
+    "camera.image": camera.Image,
+    "camera.settings": camera.Settings,
+    "camera.status": camera.Status,
+    "scope.command": scope.Command,
+    "scope.status": scope.Status,
+    "stage.aperture.command": stage.aperture.Command,
+    "stage.aperture.status": stage.aperture.Status,
+    "stage.motion.command": stage.motion.Command,
+    "stage.motion.status": stage.motion.Status,
+    "stage.rotation.command": stage.rotation.Command,
+    "stage.rotation.status": stage.rotation.Status,
+    "tile.jpeg": tile.JPEG,
+    "tile.minimap": tile.Minimap,
+    "tile.processed": tile.Processed,
+    "tile.raw": tile.Raw,
+    "tile.statistics.focus": tile.statistics.Focus,
+    "tile.statistics.histogram": tile.statistics.Histogram,
+    "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,
+    "tile.transform": tile.Transform,
+}
+
+
+msgs = (topics, __version__)
