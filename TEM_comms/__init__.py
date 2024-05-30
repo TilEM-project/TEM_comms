@@ -7,7 +7,7 @@ from . import tile
 import importlib.metadata
 
 
-__version__ = importlib.metadata.version("TEM_comms")
+__version__ = importlib.metadata.version("pigeon-tem-comms")
 
 topics = {
     "buffer.status": buffer.Status,
