@@ -1,4 +1,4 @@
-from emarfarap import BaseMessage
+from pigeon import BaseMessage
 from typing import Literal
 from pydantic import model_validator
 

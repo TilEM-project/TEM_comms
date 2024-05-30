@@ -1,4 +1,4 @@
-from emarfarap import BaseMessage
+from pigeon import BaseMessage
 
 class Command(BaseMessage):
     angle_x: float | None = None

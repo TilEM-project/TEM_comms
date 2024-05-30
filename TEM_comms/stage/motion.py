@@ -1,4 +1,4 @@
-from emarfarap import BaseMessage
+from pigeon import BaseMessage
 
 class Command(BaseMessage):
     x: int | None = None
