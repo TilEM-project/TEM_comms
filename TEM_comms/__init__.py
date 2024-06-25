@@ -3,6 +3,7 @@ from . import camera
 from . import scope
 from . import stage
 from . import tile
+from . import ui
 
 import importlib.metadata
 
@@ -31,6 +32,9 @@ topics = {
     "tile.statistics.histogram": tile.statistics.Histogram,
     "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,
     "tile.transform": tile.Transform,
+    "ui.edit": ui.Edit,
+    "ui.run": ui.Run,
+    "ui.setup": ui.Setup,
 }
 
 

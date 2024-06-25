@@ -1,6 +1,6 @@
 [project]
 name = "pigeon-tem-comms"
-version = "0.1.1"
+version = "0.2.0"
 authors = [
   { name="Cameron Devine", email="cameron.devine@alleninstitute.org" },
 ]
