@@ -2,6 +2,7 @@ from pigeon import BaseMessage
 from typing import Literal
 from pydantic import model_validator
 
+
 class Command(BaseMessage):
     focus: int | None = None
     mag_mode: Literal["LM", "MAG1", "MAG2"] | None = None
