@@ -23,7 +23,7 @@ class Raw(BaseMessage):
     path: str
     row: int
     column: int
-    overlap: float
+    overlap: int
 
 
 class Transform(BaseMessage):
