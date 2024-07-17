@@ -4,6 +4,7 @@ from . import scope
 from . import stage
 from . import tile
 from . import ui
+from . import montage
 
 import importlib.metadata
 
@@ -35,6 +36,8 @@ topics = {
     "ui.edit": ui.Edit,
     "ui.run": ui.Run,
     "ui.setup": ui.Setup,
+    "montage.start": montage.Start,
+    "montage.finished": montage.Finished,
 }
 
 
