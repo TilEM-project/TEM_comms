@@ -29,16 +29,6 @@ class Transform(BaseMessage):
     y: float
 
 
-class MontageStart(BaseMessage):
-    montage_id: str
-    num_tiles: int
-
-
-class MontageFinished(BaseMessage):
-    montage_id: str
-    num_tiles: int
-
-
 class Processed(BaseMessage):
     montage_id: str
     tile_id: str
