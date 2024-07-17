@@ -12,11 +12,6 @@ class Minimap(BaseMessage):
     path: str
 
 
-class Processed(BaseMessage):
-    tile_id: str
-    path: str
-
-
 class Raw(BaseMessage):
     tile_id: str
     montage_id: str
@@ -27,7 +22,14 @@ class Raw(BaseMessage):
 
 
 class Transform(BaseMessage):
+    montage_id: str
     tile_id: str
     rotation: float
     x: float
     y: float
+
+
+class Processed(BaseMessage):
+    montage_id: str
+    tile_id: str
+    path: str
