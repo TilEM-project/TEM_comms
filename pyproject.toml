@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [project.entry-points."pigeon.msgs"]
-msgs = "TEM_comms:msgs"
+msgs = "TEM_comms:topics"
 
 [project.urls]
 Homepage = "https://github.com/AllenInstitute/TEM_comms"

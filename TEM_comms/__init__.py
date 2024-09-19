@@ -6,10 +6,6 @@ from . import tile
 from . import ui
 from . import montage
 
-import importlib.metadata
-
-
-__version__ = importlib.metadata.version("pigeon-tem-comms")
 
 topics = {
     "buffer.status": buffer.Status,
@@ -39,6 +35,3 @@ topics = {
     "montage.start": montage.Start,
     "montage.finished": montage.Finished,
 }
-
-
-msgs = (topics, __version__)
