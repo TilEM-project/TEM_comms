@@ -5,6 +5,7 @@ from . import stage
 from . import tile
 from . import ui
 from . import montage
+from . import qc
 
 
 topics = {
@@ -34,4 +35,5 @@ topics = {
     "ui.setup": ui.Setup,
     "montage.start": montage.Start,
     "montage.finished": montage.Finished,
+    "qc.status": qc.Status,
 }
