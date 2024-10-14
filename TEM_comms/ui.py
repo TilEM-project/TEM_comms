@@ -40,3 +40,7 @@ class Setup(BaseMessage):
     lens_correction: bool = False
     acquire_brightfield: bool = False
     acquire_darkfield: bool = False
+    center_beam: bool = False
+    spread_beam: bool = False
+    find_aperture: bool = False
+    grid: Optional[int] = None

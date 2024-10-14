@@ -25,3 +25,4 @@ class Status(BaseMessage):
     tank_voltage: int
     brightness: int
     beam_offset: Tuple[int, int]
+    screen: Literal["up", "down"] | None
