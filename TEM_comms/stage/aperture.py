@@ -7,6 +7,6 @@ class Command(BaseMessage):
 
 
 class Status(BaseMessage):
-    current_aperture: int
+    current_aperture: int | None
     calibrated: bool
     error: str = ""
