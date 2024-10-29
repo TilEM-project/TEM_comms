@@ -8,7 +8,7 @@ class Command(BaseMessage):
 
 
 class Status(BaseMessage):
-    x: int
-    y: int
+    x: int | None
+    y: int | None
     in_motion: bool
     error: str = ""
