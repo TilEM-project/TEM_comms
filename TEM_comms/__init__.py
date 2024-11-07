@@ -22,7 +22,7 @@ topics = {
     "stage.motion.status": stage.motion.Status,
     "stage.rotation.command": stage.rotation.Command,
     "stage.rotation.status": stage.rotation.Status,
-    "tile.jpeg": tile.JPEG,
+    "tile.preview": tile.Preview,
     "tile.minimap": tile.Minimap,
     "tile.processed": tile.Processed,
     "tile.raw": tile.Raw,

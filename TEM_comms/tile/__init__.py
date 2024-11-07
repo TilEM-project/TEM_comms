@@ -2,9 +2,9 @@ from pigeon import BaseMessage
 from . import statistics
 
 
-class JPEG(BaseMessage):
+class Preview(BaseMessage):
     tile_id: str
-    path: str
+    image: str
 
 
 class Minimap(BaseMessage):
