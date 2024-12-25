@@ -1,4 +1,4 @@
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AllenInstitute/TEM_comms/test.yaml)](https://github.com/AllenInstitute/TEM_comms/actions)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AllenInstitute/TEM_comms/main.yaml)](https://github.com/AllenInstitute/TEM_comms/actions)
 [![PyPI - Version](https://img.shields.io/pypi/v/pigeon-tem-comms)](https://pypi.org/project/pigeon-tem-comms/)
 
 # TEM Comms
