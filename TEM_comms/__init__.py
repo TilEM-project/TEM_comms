@@ -1,12 +1,4 @@
-from . import buffer
-from . import camera
-from . import scope
-from . import stage
-from . import tile
-from . import ui
-from . import montage
-from . import qc
-
+from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui
 
 topics = {
     "buffer.status": buffer.Status,
@@ -36,4 +28,7 @@ topics = {
     "montage.start": montage.Start,
     "montage.finished": montage.Finished,
     "qc.status": qc.Status,
+    "roi.load": roi.LoadROI,
+    "roi.create": roi.CreateROI,
+    "roi.current": roi.ROI,
 }
