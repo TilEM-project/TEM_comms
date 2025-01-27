@@ -1,5 +1,5 @@
 from pigeon import BaseMessage
-from typing import Optional
+from typing import Optional, Literal
 from pydantic import model_validator
 
 
@@ -43,4 +43,12 @@ class Setup(BaseMessage):
     center_beam: bool = False
     spread_beam: bool = False
     find_aperture: bool = False
+    calibrate_resolution: bool = False
     grid: Optional[int] = None
+    mag_mode: Optional[Literal["LM", "MAG1", "MAG2"]] = None
+    mag: Optional[int] = None
+
+    @model_validator(mode="after")
+    def check_mag(self):
+        assert (self.mag_mode is None) == (self.mag is None)
+        return self
