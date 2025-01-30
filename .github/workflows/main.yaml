@@ -66,3 +66,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: gh release upload "$GITHUB_REF_NAME" TEM_comms.json --repo "$GITHUB_REPOSITORY"
+      - name: Push
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "CameronDevine@users.noreply.github.com"
+          mv TEM_comms.json TEM_comms.json.new
+          git fetch origin
+          git checkout origin/json && git checkout -b json || git switch --orphan json
+          mv TEM_comms.json.new TEM_comms.json
+          git add TEM_comms.json
+          git commit -m "Updating JSON message definitions."
+          git push origin json
