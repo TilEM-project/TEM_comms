@@ -74,6 +74,7 @@ jobs:
           git fetch origin
           git checkout origin/json && git checkout -b json || git switch --orphan json
           mv TEM_comms.json.new TEM_comms.json
-          git add TEM_comms.json
+          cp TEM_comms.json TEM_comms_$GITHUB_REF_NAME.json
+          git add TEM_comms.json TEM_comms_$GITHUB_REF_NAME.json
           git commit -m "Updating JSON message definitions."
           git push origin json
