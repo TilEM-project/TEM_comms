@@ -1,22 +1,16 @@
-from pigeon import BaseMessage
+from .metadata import TileMetadata
+from typing import List
 
 
-class Focus(BaseMessage):
-    montage_id: str
-    tile_id: str
+class Focus(TileMetadata):
     focus: float
 
 
-class Histogram(BaseMessage):
-    montage_id: str
-    tile_id: str
-    path: str
+class Histogram(TileMetadata):
+    hist: List[int]
 
 
-class MinMaxMean(BaseMessage):
-    montage_id: str
-    tile_id: str
+class MinMaxMean(TileMetadata):
     min: int
     max: int
     mean: int
-
