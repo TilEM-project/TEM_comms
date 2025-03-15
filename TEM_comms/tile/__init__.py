@@ -6,7 +6,7 @@ class Preview(TileMetadata):
     image: str
 
 
-class Minimap(TileMetadata):
+class Mini(TileMetadata):
     image: str
 
 

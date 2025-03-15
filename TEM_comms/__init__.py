@@ -1,5 +1,6 @@
 from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui
 
+
 topics = {
     "buffer.status": buffer.Status,
     "camera.command": camera.Command,
@@ -15,7 +16,7 @@ topics = {
     "stage.rotation.command": stage.rotation.Command,
     "stage.rotation.status": stage.rotation.Status,
     "tile.preview": tile.Preview,
-    "tile.minimap": tile.Minimap,
+    "tile.mini": tile.Mini,
     "tile.processed": tile.Processed,
     "tile.raw": tile.Raw,
     "tile.statistics.focus": tile.statistics.Focus,
@@ -31,4 +32,5 @@ topics = {
     "roi.load": roi.LoadROI,
     "roi.create": roi.CreateROI,
     "roi.current": roi.ROI,
+    "montage.minimaps": montage.Minimaps,
 }
