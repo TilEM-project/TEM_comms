@@ -4,11 +4,15 @@ from typing import Optional
 
 class Command(BaseMessage):
     tile_id: str
+    montage_id: str
+    brightfield: Optional[bool] = False
+    darkfield: Optional[bool] = False
+    lens_correction: Optional[bool] = True
 
 
 class Image(BaseMessage):
     tile_id: str
-    path: str
+    montage_id: str
 
 
 class Settings(BaseMessage):
