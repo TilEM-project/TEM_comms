@@ -1,18 +1,16 @@
 from pigeon import BaseMessage
-from typing import Mapping, List, Any, Optional
+from typing import Mapping, List, Any, Optional, Tuple
+from datetime import datetime
 
 
-class Start(BaseMessage):
+class Complete(BaseMessage):
     montage_id: str
-    num_tiles: int
-
-
-class Finished(BaseMessage):
-    montage_id: str
-    num_tiles: int
-    roi: str
-    specimen: str
-    metadata: Mapping[str, Any] | List[Any]
+    tile_ids: List[str]
+    acquisition_id: str
+    start_time: datetime
+    pixel_size: float
+    rotation_angle: float
+    aperture_centroid: Tuple[int, int]
 
 
 class Minimap(BaseMessage):

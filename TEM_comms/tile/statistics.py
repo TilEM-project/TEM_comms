@@ -14,3 +14,4 @@ class MinMaxMean(TileMetadata):
     min: int
     max: int
     mean: int
+    std: int

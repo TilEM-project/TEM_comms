@@ -31,3 +31,4 @@ class Status(BaseMessage):
     device_name: str
     device_model_id: int
     device_sn: str
+    bit_depth: int
