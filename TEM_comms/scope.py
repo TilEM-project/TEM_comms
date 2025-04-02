@@ -9,6 +9,7 @@ class Command(BaseMessage):
     mag: Optional[int] = None
     brightness: Optional[int] = None
     beam_offset: Optional[Tuple[int, int]] = None
+    spot_size: Optional[int] = None
     screen: Optional[Literal["up", "down"]] = None
 
     @model_validator(mode="after")
@@ -25,4 +26,5 @@ class Status(BaseMessage):
     tank_voltage: int
     brightness: int
     beam_offset: Tuple[int, int]
+    spot_size: int
     screen: Literal["up", "down"] | None
