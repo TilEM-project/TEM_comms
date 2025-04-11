@@ -1,11 +1,17 @@
 from pigeon import BaseMessage
-from typing import Mapping, List, Any, Optional, Tuple
+from typing import Mapping, Dict, Any, Optional, Tuple
 from datetime import datetime
+
+
+class Tile(BaseMessage):
+    raster_index: int
+    stage_position: Tuple[int, int]
+    raster_position: Tuple[int, int]
 
 
 class Complete(BaseMessage):
     montage_id: str
-    tile_ids: List[str]
+    tiles: Dict[str, Tile]
     acquisition_id: str
     start_time: datetime
     pixel_size: float
