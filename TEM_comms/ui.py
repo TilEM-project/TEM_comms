@@ -20,6 +20,8 @@ class Run(BaseMessage):
     abort_now: bool = False
     abort_at_end: bool = False
     resume: bool = False
+    tilt_angle_x: float | None = None
+    tilt_angle_y: float | None = None
 
     @model_validator(mode="after")
     def check_grid(self):

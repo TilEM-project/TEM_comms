@@ -17,6 +17,8 @@ class Complete(BaseMessage):
     pixel_size: float
     rotation_angle: float
     aperture_centroid: Tuple[int, int]
+    tilt_angle_x: float | None = None
+    tilt_angle_y: float | None = None
 
 
 class Minimap(BaseMessage):
