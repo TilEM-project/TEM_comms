@@ -20,6 +20,7 @@ class Run(BaseMessage):
     abort_now: bool = False
     abort_at_end: bool = False
     resume: bool = False
+    cancel: bool = False
 
     @model_validator(mode="after")
     def check_grid(self):
