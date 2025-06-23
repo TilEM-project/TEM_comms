@@ -1,4 +1,9 @@
-from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui
+from pigeon import BaseMessage
+from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration
+
+
+class State(BaseMessage):
+    state: str
 
 
 topics = {
@@ -32,4 +37,7 @@ topics = {
     "roi.create": roi.CreateROI,
     "roi.current": roi.ROI,
     "montage.minimaps": montage.Minimaps,
+    "calibration.resolution": calibration.Resolution,
+    "calibration.centroid": calibration.Centroid,
+    "state": State,
 }
