@@ -21,7 +21,7 @@ class Command(BaseMessage):
 class Status(BaseMessage):
     focus: int
     aperture: str | None
-    mag_mode: str
+    mag_mode: Literal["MAG", "LOWMAG"]
     mag: int
     tank_voltage: int
     brightness: int
