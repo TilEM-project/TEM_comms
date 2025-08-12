@@ -1,9 +1,4 @@
-from pigeon import BaseMessage
-from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration
-
-
-class State(BaseMessage):
-    state: str
+from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration, state
 
 
 topics = {
@@ -39,5 +34,6 @@ topics = {
     "montage.minimaps": montage.Minimaps,
     "calibration.resolution": calibration.Resolution,
     "calibration.centroid": calibration.Centroid,
-    "state": State,
+    "state.current": state.Current,
+    "state.change": state.Change,
 }
