@@ -27,7 +27,7 @@ topics = {
     "tile.statistics.focus": tile.statistics.Focus,
     "tile.statistics.histogram": tile.statistics.Histogram,
     "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,
-    "tile.transform": tile.Transform,
+    "tile.matches": tile.Matches,
     "ui.edit": ui.Edit,
     "ui.run": ui.Run,
     "ui.setup": ui.Setup,
