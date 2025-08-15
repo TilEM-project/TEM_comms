@@ -31,15 +31,6 @@ class LoadROI(BaseMessage):
     )
 
 
-class CreateROI(BaseMessage):
+class CreateROI(ROI):
     center: Vertex
-    width: float
-    height: float
-    rotation_angle: float = 0.0
-    montage_id: str
-    specimen_id: Optional[str] = None
-    grid_id: Optional[str] = None
-    section_id: Optional[str] = None
-    queue_position: Optional[int] = Field(
-        None, description="Position in queue, None means set as current"
-    )
+   
