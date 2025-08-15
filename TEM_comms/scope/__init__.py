@@ -1,6 +1,7 @@
 from pigeon import BaseMessage
 from typing import Literal, Optional, Tuple
 from pydantic import model_validator
+from . import image_shift
 
 
 class Command(BaseMessage):
