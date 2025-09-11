@@ -39,6 +39,7 @@ topics = {
     "roi.load": roi.LoadROI,
     "roi.create": roi.CreateROI,
     "roi.current": roi.ROI,
+    "roi.status": roi.ROIStatus,
     "montage.minimaps": montage.Minimaps,
     "calibration.resolution": calibration.Resolution,
     "calibration.centroid": calibration.Centroid,
