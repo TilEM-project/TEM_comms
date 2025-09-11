@@ -1,16 +1,4 @@
-from pigeon import BaseMessage
-from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration
-from pydantic import Field
-
-
-class State(BaseMessage):
-    """
-    The current state of the orchestration state machine.
-    """
-
-    state: str = Field(
-        description="The current state of the orchestration state machine."
-    )
+from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration, state
 
 
 topics = {
@@ -50,5 +38,6 @@ topics = {
     "montage.minimaps": montage.Minimaps,
     "calibration.resolution": calibration.Resolution,
     "calibration.centroid": calibration.Centroid,
-    "state": State,
+    "state.current": state.Current,
+    "state.change": state.Change,
 }
