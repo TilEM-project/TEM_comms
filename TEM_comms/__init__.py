@@ -1,9 +1,16 @@
 from pigeon import BaseMessage
 from . import buffer, camera, montage, qc, roi, scope, stage, tile, ui, calibration
+from pydantic import Field
 
 
 class State(BaseMessage):
-    state: str
+    """
+    The current state of the orchestration state machine.
+    """
+
+    state: str = Field(
+        description="The current state of the orchestration state machine."
+    )
 
 
 topics = {

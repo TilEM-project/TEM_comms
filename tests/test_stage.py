@@ -16,7 +16,13 @@ def test_motion_command_with_extra_fields():
 
 def test_motion_status_with_extra_fields():
     status = MotionStatus(
-        x=10, y=20, z=30, in_motion=True, error="", extra_field="extra_value"
+        x=10,
+        y=20,
+        z=30,
+        in_motion=True,
+        error="",
+        calibrated=True,
+        extra_field="extra_value",
     )
     assert status.x == 10
     assert status.y == 20

@@ -1,6 +1,6 @@
 from pigeon import BaseMessage
 from typing import Optional, Literal
-from pydantic import model_validator
+from pydantic import model_validator, Field
 
 
 class Edit(BaseMessage):
@@ -13,41 +13,66 @@ class Edit(BaseMessage):
 
 
 class Run(BaseMessage):
-    session_id: Optional[str] = None
-    grid_first: Optional[int] = None
-    grid_last: Optional[int] = None
-    montage: bool = False
-    abort_now: bool = False
-    abort_at_end: bool = False
-    resume: bool = False
-    cancel: bool = False
+    """
+    This message is used start and stop automated image acquisition.
+    """
 
-    @model_validator(mode="after")
-    def check_grid(self):
-        assert self.montage != (self.grid_first is None)
-        assert self.montage != (self.grid_last is None)
-        return self
-
-    @model_validator(mode="after")
-    def check_session(self):
-        assert self.montage != (self.session_id is None)
-        return self
+    montage: bool = Field(
+        default=False,
+        description="Begin collecting montages according to the ROI queue.",
+    )
+    abort_now: bool = Field(default=False, description="Stop imaging immediately.")
+    abort_at_end: bool = Field(
+        default=False, description="Stop imaging after the current montage is complete."
+    )
+    resume: bool = Field(default=False, description="Resume from a failure state.")
+    cancel: bool = Field(
+        default=False, description="Return to preview mode from a failure state."
+    )
 
 
 class Setup(BaseMessage):
-    conch_owner: Optional[str] = None
-    auto_focus: bool = False
-    auto_exposure: bool = False
-    lens_correction: bool = False
-    acquire_brightfield: bool = False
-    acquire_darkfield: bool = False
-    center_beam: bool = False
-    spread_beam: bool = False
-    find_aperture: bool = False
-    calibrate_resolution: bool = False
-    grid: Optional[int] = None
-    mag_mode: Optional[Literal["LM", "MAG1", "MAG2"]] = None
-    mag: Optional[int] = None
+    """
+    This message is utilized to setup a microscope in a semi-automated manner. Each of the fields in this message instructs the system to run an individual setup routine.
+    """
+
+    auto_focus: bool = Field(
+        default=False, description="Automatically focus the microscope."
+    )
+    auto_exposure: bool = Field(
+        default=False, description="Optimize the camera exposure."
+    )
+    lens_correction: bool = Field(
+        default=False, description="Collect and generate a lens correction."
+    )
+    acquire_brightfield: bool = Field(
+        default=False, description="Acquire a darkfield image."
+    )
+    acquire_darkfield: bool = Field(
+        default=False, description="Acquire a brightfield image."
+    )
+    center_beam: bool = Field(
+        default=False, description="Center the beam in the image frame."
+    )
+    spread_beam: bool = Field(default=False, description="Spread the beam.")
+    find_aperture: bool = Field(
+        default=False, description="Find and move to the aperture centroid."
+    )
+    calibrate_resolution: bool = Field(
+        default=False,
+        description="Calibrate the resolution of the microscope at the current mag level.",
+    )
+    grid: Optional[int] = Field(
+        default=None, description="Change to the specified grid."
+    )
+    mag_mode: Optional[Literal["LM", "MAG1", "MAG2"]] = Field(
+        default=None,
+        description='Change to the specified mag mode. The "mag" field must also be specified.',
+    )
+    mag: Optional[int] = Field(
+        default=None,
+        description='Change to the specified magnification. "mga_mode" must also be specified.',
+    )
 
     @model_validator(mode="after")
     def check_mag(self):
