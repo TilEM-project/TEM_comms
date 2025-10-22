@@ -10,6 +10,7 @@ from . import (
     ui,
     calibration,
     state,
+    lens_correction,
 )
 
 
@@ -53,4 +54,5 @@ topics = {
     "calibration.centroid": calibration.Centroid,
     "state.current": state.Current,
     "state.change": state.Change,
+    "lens_correction.transform": lens_correction.Transform,
 }
