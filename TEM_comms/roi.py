@@ -9,30 +9,61 @@ class Vertex(BaseMessage):
 
 
 class ROI(BaseMessage):
-    vertices: List[Vertex]
-    rotation_angle: float
-    buffer_size: float = 0.0
-    montage_id: str
-    specimen_id: Optional[str] = None
-    grid_id: Optional[str] = None
-    section_id: Optional[str] = None
-    metadata: Optional[dict] = None
+    """
+    Information about the current ROI being imaged.
+    """
+
+    vertices: List[Vertex] = Field(
+        description="A list of points defining a polygonal ROI."
+    )
+    rotation_angle: float = Field(
+        description="The rotation angle of the ROI in radians."
+    )
+    buffer_size: float = Field(
+        default=0.0,
+        description="The amount to dialate the ROI in nanometers when imaging.",
+    )
+    montage_id: str = Field(description="The montage ID to use when imaging the ROI.")
+    specimen_id: Optional[str] = Field(
+        default=None, description="The specimen ID corresponding to this ROI."
+    )
+    grid_id: Optional[str] = Field(
+        default=None, description="The grid ID where this ROI should be imaged."
+    )
+    section_id: Optional[str] = Field(
+        default=None, description="The section ID corresponding to this ROI."
+    )
+    metadata: Optional[dict] = Field(
+        default=None, description="Extra metadata about this ROI."
+    )
     queue_position: Optional[int] = Field(
         None, description="Position in queue, None means set as current"
     )
 
 
 class LoadROI(BaseMessage):
-    specimen_id: str
-    section_id: str
-    grid_id: Optional[str] = None
+    """
+    This message can be used to load an ROI from the database into the ROI queue.
+    """
+
+    specimen_id: str = Field(description="The specimen ID to load from the database.")
+    section_id: str = Field(description="The section ID to load from the database.")
+    grid_id: Optional[str] = Field(
+        default=None, description="The the grid ID where the section is loaded."
+    )
     queue_position: Optional[int] = Field(
         None, description="Position in queue, None means set as current"
     )
 
 
 class CreateROI(ROI):
-    center: Optional[Vertex] = None
+    """
+    This message can be used to create an ROI and add it to the ROI queue.
+    """
+
+    center: Optional[Vertex] = Field(
+        default=None, description="The center point of the ROI."
+    )
     tilt_angles: Optional[List[float]] = Field(
         default=[0.0],
         description="List of tilt angles in degrees for tomography series",
@@ -49,6 +80,10 @@ class CreateROI(ROI):
 
 
 class ROIStatus(BaseMessage):
+    """
+    This message contains information on the status of an individual ROI.
+    """
+
     type: str = Field(
         description="Event type: roi_added, roi_advanced, queue_cleared, queue_empty"
     )
