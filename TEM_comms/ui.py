@@ -4,12 +4,16 @@ from pydantic import model_validator, Field
 
 
 class Edit(BaseMessage):
-    roi_id: str
-    roi_pos_x: int
-    roi_pox_y: int
-    roi_width: int
-    roi_height: int
-    roi_angle: float
+    """
+    This message is used to edit existing ROIs in the ROI queue.
+    """
+    
+    roi_id: str = Field(description="The ROI id to edit.")
+    roi_pos_x: int = Field(description="The new X position of the ROI in nanometers.")
+    roi_pox_y: int = Field(description="The new Y position of the ROI in nanometers.")
+    roi_width: int = Field(description="The new width of the ROI in nanometers.")
+    roi_height: int = Field(description="The new height of the ROI in nanometers.")
+    roi_angle: float = Field(description="The new angle to rotate the ROI in radians.")
 
 
 class Run(BaseMessage):
