@@ -7,7 +7,7 @@ class Edit(BaseMessage):
     """
     This message is used to edit existing ROIs in the ROI queue.
     """
-    
+
     roi_id: str = Field(description="The ROI id to edit.")
     roi_pos_x: int = Field(description="The new X position of the ROI in nanometers.")
     roi_pox_y: int = Field(description="The new Y position of the ROI in nanometers.")

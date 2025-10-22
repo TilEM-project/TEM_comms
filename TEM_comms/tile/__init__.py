@@ -80,17 +80,31 @@ class TemplateMatch(BaseModel):
         description="The position of matched tile relative to the captured tile."
     )
 
-    offsets: List[Tuple[float, float]] = Field(description="The offsets between expected and actual template positions.")
+    offsets: List[Tuple[float, float]] = Field(
+        description="The offsets between expected and actual template positions."
+    )
     distance: List[float] = Field(description="The distance of each offset.")
     rotation: List[float] = Field(description="The angle of each offset.")
-    maxVal: List[float] = Field(description="The maximum value from each of the template matches.")
-    minVal: List[float] = Field(description="The minimum value from each of the template matches.")
-    expected_offset_in_crop: List[Tuple[int,int]] = Field(description="")
-    maxLoc: List[Tuple[int,int]] = Field(description="The maximum location of each template match.")
-    matched_pos_img2: List[Tuple[int,int]] = Field(description="Each of the template top left corner absolute locations.")
-    matched_center_img2: List[Tuple[int,int]] = Field(description="Each of the template center absolute locations.")
+    maxVal: List[float] = Field(
+        description="The maximum value from each of the template matches."
+    )
+    minVal: List[float] = Field(
+        description="The minimum value from each of the template matches."
+    )
+    expected_offset_in_crop: List[Tuple[int, int]] = Field(description="")
+    maxLoc: List[Tuple[int, int]] = Field(
+        description="The maximum location of each template match."
+    )
+    matched_pos_img2: List[Tuple[int, int]] = Field(
+        description="Each of the template top left corner absolute locations."
+    )
+    matched_center_img2: List[Tuple[int, int]] = Field(
+        description="Each of the template center absolute locations."
+    )
     good: List[bool] = Field(description="True if an individual match is good.")
-    reject_reason: List[str] = Field(description="The reason why an individual match is not good.")
+    reject_reason: List[str] = Field(
+        description="The reason why an individual match is not good."
+    )
 
 
 class TemplateMatches(TileMetadata):
