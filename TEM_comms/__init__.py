@@ -38,6 +38,7 @@ topics = {
     "tile.statistics.histogram": tile.statistics.Histogram,
     "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,
     "tile.matches": tile.Matches,
+    "tile.template_matches": tile.TemplateMatches,
     "ui.edit": ui.Edit,
     "ui.run": ui.Run,
     "ui.setup": ui.Setup,
