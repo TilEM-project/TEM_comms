@@ -1,26 +1,13 @@
 from pigeon import BaseMessage
-from .tile.metadata import TileMetadata
+from .tile.metadata import TileMetadata, ProcessingOptions
 from typing import Optional
 from pydantic import Field
 
 
-class Command(TileMetadata):
+class Command(TileMetadata, ProcessingOptions):
     """
     This message is used to instruct the camera to capture an image.
     """
-
-    brightfield: Optional[bool] = Field(
-        default=False,
-        description="If true, this tile should be used in creating the brightfield image.",
-    )
-    darkfield: Optional[bool] = Field(
-        default=False,
-        description="If true, this tile should be used in creating the darkfield image.",
-    )
-    lens_correction: Optional[bool] = Field(
-        default=True,
-        description="If true, this tile is part of a lens correction montage.",
-    )
 
 
 class Image(BaseMessage):

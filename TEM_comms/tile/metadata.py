@@ -1,5 +1,6 @@
 from pigeon import BaseMessage
 from pydantic import Field
+from typing import Optional
 
 
 class TileMetadata(BaseMessage):
@@ -19,4 +20,19 @@ class TileMetadata(BaseMessage):
     )
     overlap: int = Field(
         description="The number of pixels of overlap between tiles.", examples=[512]
+    )
+
+
+class ProcessingOptions(BaseMessage):
+    brightfield: Optional[bool] = Field(
+        default=False,
+        description="If true, this tile should be used in creating the brightfield image.",
+    )
+    darkfield: Optional[bool] = Field(
+        default=False,
+        description="If true, this tile should be used in creating the darkfield image.",
+    )
+    lens_correction: Optional[bool] = Field(
+        default=False,
+        description="If true, this tile is part of a lens correction montage.",
     )

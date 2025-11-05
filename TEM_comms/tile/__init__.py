@@ -1,7 +1,7 @@
-from .metadata import TileMetadata
+from .metadata import TileMetadata, ProcessingOptions
 from . import statistics
 from pydantic import BaseModel, Field
-from typing import Literal, List, Tuple
+from typing import Literal, List, Tuple, Optional
 
 
 class Preview(TileMetadata):
@@ -20,7 +20,7 @@ class Mini(TileMetadata):
     image: str = Field(description="The downsampled tile as a base 64 encoded string.")
 
 
-class Raw(TileMetadata):
+class Raw(TileMetadata, ProcessingOptions):
     """
     This message is sent whenever a new tile is stored on the filesystem and is ready for processing.
     """
@@ -74,37 +74,42 @@ class Matches(TileMetadata):
 class TemplateMatch(BaseModel):
     model_config = {"extra": "forbid"}
 
+    offset: Tuple[float, float] = Field(
+        description="The offset between the expected and actual template positions."
+    )
+    distance: float = Field(description="The distance of the offset.")
+    rotation: float = Field(description="The angle of the offset.")
+    maxVal: float = Field(
+        description="The maximum value of the template match."
+    )
+    minVal: float = Field(
+        description="The minimum value of the template match."
+    )
+    expected_offset_in_crop: Tuple[int, int] = Field(description="")
+    maxLoc: Tuple[int, int] = Field(
+        description="The maximum location of the template match."
+    )
+    matched_pos_img2: Tuple[int, int] = Field(
+        description="The template top left corner absolute location."
+    )
+    matched_center_img2: Tuple[int, int] = Field(
+        description="The template center absolute location."
+    )
+    good: bool = Field(description="True if the match is good.")
+    reject_reason: Optional[str] = Field(
+        default="", description="The reason why the match is not good."
+    )
+
+
+class TemplateMatchContainer(BaseModel):
+    model_config = {"extra": "forbid"}
+
     row: int = Field(description="The row of the neighboring tile.")
     column: int = Field(description="The column of the neighboring tile.")
     position: Literal["top", "bottom", "left", "right"] = Field(
         description="The position of matched tile relative to the captured tile."
     )
-
-    offsets: List[Tuple[float, float]] = Field(
-        description="The offsets between expected and actual template positions."
-    )
-    distance: List[float] = Field(description="The distance of each offset.")
-    rotation: List[float] = Field(description="The angle of each offset.")
-    maxVal: List[float] = Field(
-        description="The maximum value from each of the template matches."
-    )
-    minVal: List[float] = Field(
-        description="The minimum value from each of the template matches."
-    )
-    expected_offset_in_crop: List[Tuple[int, int]] = Field(description="")
-    maxLoc: List[Tuple[int, int]] = Field(
-        description="The maximum location of each template match."
-    )
-    matched_pos_img2: List[Tuple[int, int]] = Field(
-        description="Each of the template top left corner absolute locations."
-    )
-    matched_center_img2: List[Tuple[int, int]] = Field(
-        description="Each of the template center absolute locations."
-    )
-    good: List[bool] = Field(description="True if an individual match is good.")
-    reject_reason: List[str] = Field(
-        description="The reason why an individual match is not good."
-    )
+    matches: List[TemplateMatch] = Field(description="A list of data structures containing the information about each individual match.")
 
 
 class TemplateMatches(TileMetadata):
@@ -112,7 +117,7 @@ class TemplateMatches(TileMetadata):
     This message contains data reltaing to template matches used for calculating the lens correction transform.
     """
 
-    matches: List[TemplateMatch] = Field(
+    matches: List[TemplateMatchContainer] = Field(
         description="Information about how the captured tile matches to each of its available neighbors."
     )
 
