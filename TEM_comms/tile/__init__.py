@@ -74,6 +74,12 @@ class Matches(TileMetadata):
 class TemplateMatch(BaseModel):
     model_config = {"extra": "forbid"}
 
+    query_point: Tuple[float, float] = Field(
+        description="The center point of the template in the template image."
+    )
+    search_point: Tuple[float, float] = Field(
+        description="The center point of the search patch in the search image."
+    )
     offset: Tuple[float, float] = Field(
         description="The offset between the expected and actual template positions."
     )
