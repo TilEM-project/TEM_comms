@@ -85,12 +85,8 @@ class TemplateMatch(BaseModel):
     )
     distance: float = Field(description="The distance of the offset.")
     rotation: float = Field(description="The angle of the offset.")
-    maxVal: float = Field(
-        description="The maximum value of the template match."
-    )
-    minVal: float = Field(
-        description="The minimum value of the template match."
-    )
+    maxVal: float = Field(description="The maximum value of the template match.")
+    minVal: float = Field(description="The minimum value of the template match.")
     expected_offset_in_crop: Tuple[int, int] = Field(description="")
     maxLoc: Tuple[int, int] = Field(
         description="The maximum location of the template match."
@@ -115,7 +111,9 @@ class TemplateMatchContainer(BaseModel):
     position: Literal["top", "bottom", "left", "right"] = Field(
         description="The position of matched tile relative to the captured tile."
     )
-    matches: List[TemplateMatch] = Field(description="A list of data structures containing the information about each individual match.")
+    matches: List[TemplateMatch] = Field(
+        description="A list of data structures containing the information about each individual match."
+    )
 
 
 class TemplateMatches(TileMetadata):
