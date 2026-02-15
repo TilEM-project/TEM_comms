@@ -16,7 +16,7 @@ class Calibrate(BaseMessage):
 
 class Status(BaseMessage):
     """
-    This message conatins the status of the image shifting system.
+    This message contains the status of the image shifting system.
     """
 
     enabled: bool = Field(

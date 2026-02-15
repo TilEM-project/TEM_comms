@@ -19,7 +19,7 @@ class Resolution(BaseMessage):
     """
 
     lowmag: Mapping[int, _Resolution] = Field(
-        description="A mapping of calibrated low-mag magnifications to thier calibration values."
+        description="A mapping of calibrated low-mag magnifications to their calibration values."
     )
     mag: Mapping[int, _Resolution] = Field(
         description="A mapping of calibrated high-mag magnifications to their calibration values."

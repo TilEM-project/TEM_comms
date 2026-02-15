@@ -12,7 +12,7 @@ class Tile(BaseMessage):
         description="The X-Y stage position of the tile in nanometers."
     )
     raster_position: Tuple[int, int] = Field(
-        description="The X-Y indicies of the tile in the montage."
+        description="The X-Y indices of the tile in the montage."
     )
 
 
@@ -25,7 +25,7 @@ class Complete(BaseMessage):
     tiles: Dict[str, Tile] = Field(
         description="A mapping from tile IDs to tile metadata."
     )
-    acquisition_id: str = Field(description="The corresponding TEMdb acqusition ID.")
+    acquisition_id: str = Field(description="The corresponding TEMdb acquisition ID.")
     start_time: datetime = Field(
         description="The timestamp when the montage was started."
     )

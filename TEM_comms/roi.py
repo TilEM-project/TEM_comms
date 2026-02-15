@@ -21,7 +21,7 @@ class ROI(BaseMessage):
     )
     buffer_size: float = Field(
         default=0.0,
-        description="The amount to dialate the ROI in nanometers when imaging.",
+        description="The amount to dilate the ROI in nanometers when imaging.",
     )
     montage_id: str = Field(description="The montage ID to use when imaging the ROI.")
     specimen_id: Optional[str] = Field(

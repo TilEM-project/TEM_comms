@@ -4,7 +4,7 @@ from pydantic import ConfigDict, Field
 
 class Command(BaseMessage):
     """
-    This message is uesd to change between apertures on a substrate.
+    This message is used to change between apertures on a substrate.
     """
 
     model_config = ConfigDict(extra="allow")

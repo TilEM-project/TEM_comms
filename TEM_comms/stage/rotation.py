@@ -36,7 +36,7 @@ class Status(BaseMessage):
         description="The current angle around the Y axis in radians."
     )
     eucentric_height: float = Field(
-        description="The current enucentric height value in nanometers."
+        description="The current eucentric height value in nanometers."
     )
     in_motion: bool = Field(
         description="True if the rotation stage is currently moving."
