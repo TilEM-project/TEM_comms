@@ -4,6 +4,11 @@ from TEM_comms.stage.aperture import (
     Status as ApertureStatus,
 )
 
+from TEM_comms.stage.transfer import (
+    Command as TransferCommand,
+    Status as TransferStatus,
+)
+
 
 def test_motion_command_with_extra_fields():
     command = MotionCommand(x=10, y=20, z=30, calibrate=True, wait_for_settle=True)
@@ -47,3 +52,40 @@ def test_aperture_status_with_extra_fields():
     assert status.calibrated is True
     assert status.error == ""
     assert status.extra_field == "extra_value"
+
+
+def test_transfer_command():
+    command = TransferCommand(station="loadlock")
+    assert command.station == "loadlock"
+
+
+def test_transfer_command_defaults():
+    command = TransferCommand()
+    assert command.station is None
+
+
+def test_transfer_status():
+    status = TransferStatus(
+        current_station="microscope",
+        target_station="loadlock",
+        in_transit=True,
+        step=1,
+        total_steps=2,
+        error="",
+    )
+    assert status.current_station == "microscope"
+    assert status.target_station == "loadlock"
+    assert status.in_transit is True
+    assert status.step == 1
+    assert status.total_steps == 2
+
+
+def test_transfer_status_idle():
+    status = TransferStatus(
+        current_station="microscope",
+        in_transit=False,
+    )
+    assert status.target_station is None
+    assert status.step == 0
+    assert status.total_steps == 0
+    assert status.error == ""
