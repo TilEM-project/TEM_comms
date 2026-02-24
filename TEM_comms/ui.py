@@ -29,6 +29,9 @@ class Run(BaseMessage):
     abort_at_end: bool = Field(
         default=False, description="Stop imaging after the current montage is complete."
     )
+    pause: bool = Field(
+        default=False, description="Pause imaging during the current montage, then resume when ready."
+    )
     resume: bool = Field(default=False, description="Resume from a failure state.")
     cancel: bool = Field(
         default=False, description="Return to preview mode from a failure state."
