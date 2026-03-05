@@ -1,6 +1,6 @@
 from pigeon import BaseMessage
 from pydantic import Field
-from typing import Optional
+from typing import Optional, Tuple
 
 
 class TileMetadata(BaseMessage):
@@ -20,6 +20,11 @@ class TileMetadata(BaseMessage):
     )
     overlap: int = Field(
         description="The number of pixels of overlap between tiles.", examples=[512]
+    )
+    stage_position: Optional[Tuple[int, int]] = Field(
+        default=None,
+        description="The X-Y stage position in nanometers at the time of capture.",
+        examples=[(100_000, -50_000)],
     )
 
 
