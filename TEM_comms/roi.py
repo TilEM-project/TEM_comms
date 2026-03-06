@@ -1,6 +1,7 @@
 from pigeon import BaseMessage
 from typing import List, Tuple, Optional
 from pydantic import Field
+from .tilt import TiltMetadata
 
 
 class Vertex(BaseMessage):
@@ -79,7 +80,7 @@ class CreateROI(ROI):
     )
 
 
-class ROIStatus(BaseMessage):
+class ROIStatus(TiltMetadata):
     """
     This message contains information on the status of an individual ROI.
     """

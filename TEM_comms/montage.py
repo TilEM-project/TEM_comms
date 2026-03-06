@@ -2,6 +2,7 @@ from pigeon import BaseMessage
 from typing import Mapping, Dict, Any, Optional, Tuple
 from datetime import datetime
 from pydantic import Field
+from .tilt import TiltMetadata
 
 
 class Tile(BaseMessage):
@@ -16,7 +17,7 @@ class Tile(BaseMessage):
     )
 
 
-class Complete(BaseMessage):
+class Complete(TiltMetadata):
     """
     This message is sent after a montage is completed.
     """
