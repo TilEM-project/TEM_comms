@@ -13,7 +13,7 @@ class Command(BaseMessage):
         default=None,
         description="The desired focus value for the microscope, or None to keep the current value.",
     )
-    mag_mode: Optional[Literal["LM", "MAG1", "MAG2"]] = Field(
+    mag_mode: Optional[Literal["MAG", "LOWMAG"]] = Field(
         default=None,
         description="The desired magnification mode for the microscope, or None to keep the current value.",
     )
@@ -54,7 +54,7 @@ class Status(BaseMessage):
         description="The current status of the objective aperture, or None if unknown."
     )
     mag_mode: Literal["MAG", "LOWMAG"] = Field(
-        description="The curreng magnification mode."
+        description="The current magnification mode."
     )
     mag: int = Field(description="The current magnification.")
     tank_voltage: int = Field(

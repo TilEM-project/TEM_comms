@@ -1,5 +1,5 @@
 from pigeon import BaseMessage
-from typing import Optional, Literal
+from typing import Optional, Literal, List
 from pydantic import model_validator, Field
 
 
@@ -72,13 +72,18 @@ class Setup(BaseMessage):
     grid: Optional[int] = Field(
         default=None, description="Change to the specified grid."
     )
-    mag_mode: Optional[Literal["LM", "MAG1", "MAG2"]] = Field(
+    mag_mode: Optional[Literal["MAG", "LOWMAG"]] = Field(
         default=None,
         description='Change to the specified mag mode. The "mag" field must also be specified.',
     )
     mag: Optional[int] = Field(
         default=None,
-        description='Change to the specified magnification. "mga_mode" must also be specified.',
+        description='Change to the specified magnification. "mag_mode" must also be specified.',
+    )
+
+    tilt_angles: Optional[List[float]] = Field(
+        default=None,
+        description="List of tilt angles in degrees for tilt tomography series.",
     )
 
     @model_validator(mode="after")

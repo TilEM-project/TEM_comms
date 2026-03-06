@@ -11,10 +11,11 @@ def test_run():
 
 def test_setup():
     with pytest.raises(ValidationError):
-        Setup(mag_mode="LM")
+        Setup(mag_mode="LOWMAG")
 
     with pytest.raises(ValidationError):
         Setup(mag=10)
 
     Setup()
-    Setup(mag_mode="LM", mag=1)
+    Setup(mag_mode="LOWMAG", mag=1)
+    Setup(mag_mode="MAG", mag=1)
