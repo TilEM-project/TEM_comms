@@ -1,4 +1,5 @@
 from .metadata import TileMetadata, ProcessingOptions
+from ..tilt import TiltMetadata
 from . import statistics
 from pydantic import BaseModel, Field
 from typing import Literal, List, Tuple, Optional
@@ -20,7 +21,7 @@ class Mini(TileMetadata):
     image: str = Field(description="The downsampled tile as a base 64 encoded string.")
 
 
-class Raw(TileMetadata, ProcessingOptions):
+class Raw(TileMetadata, TiltMetadata, ProcessingOptions):
     """
     This message is sent whenever a new tile is stored on the filesystem and is ready for processing.
     """

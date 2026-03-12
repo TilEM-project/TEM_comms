@@ -28,8 +28,8 @@ class ROI(BaseMessage):
     specimen_id: Optional[str] = Field(
         default=None, description="The specimen ID corresponding to this ROI."
     )
-    grid_id: Optional[str] = Field(
-        default=None, description="The grid ID where this ROI should be imaged."
+    aperture_id: Optional[int] = Field(
+        default=None, description="The aperture ID to navigate to before imaging this ROI."
     )
     section_id: Optional[str] = Field(
         default=None, description="The section ID corresponding to this ROI."
@@ -49,8 +49,8 @@ class LoadROI(BaseMessage):
 
     specimen_id: str = Field(description="The specimen ID to load from the database.")
     section_id: str = Field(description="The section ID to load from the database.")
-    grid_id: Optional[str] = Field(
-        default=None, description="The the grid ID where the section is loaded."
+    aperture_id: Optional[int] = Field(
+        default=None, description="The aperture ID where the section is loaded."
     )
     queue_position: Optional[int] = Field(
         None, description="Position in queue, None means set as current"
