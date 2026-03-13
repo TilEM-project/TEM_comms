@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 
 from pigeon import BaseMessage
 from typing import Mapping, Dict, Any, Optional, Tuple
@@ -7,7 +7,7 @@ from pydantic import Field
 from .tilt import TiltMetadata
 
 
-class MontageState(StrEnum):
+class MontageState(str, Enum):
     """Lifecycle states for montage acquisition."""
 
     STARTED = "started"
