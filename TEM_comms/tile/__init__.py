@@ -2,7 +2,7 @@ from .metadata import TileMetadata, ProcessingOptions
 from ..tilt import TiltMetadata
 from pydantic import BaseModel, Field
 from typing import Literal, List, Tuple, Optional
-
+from . import statistics
 
 class Preview(TileMetadata):
     """
