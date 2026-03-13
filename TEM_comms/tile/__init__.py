@@ -1,6 +1,5 @@
 from .metadata import TileMetadata, ProcessingOptions
 from ..tilt import TiltMetadata
-from . import statistics
 from pydantic import BaseModel, Field
 from typing import Literal, List, Tuple, Optional
 
@@ -49,7 +48,7 @@ class Match(BaseModel):
     dYsd: float = Field(
         description="The Y axis offset standard deviation of all the feature matches."
     )
-    distance: float = Field(description="The euclidian offset distance in pixels.")
+    distance: float = Field(description="The euclidean offset distance in pixels.")
     rotation: float = Field(
         description="The tile rotation in radians necessary to get the tiles to match."
     )
@@ -119,7 +118,7 @@ class TemplateMatchContainer(BaseModel):
 
 class TemplateMatches(TileMetadata):
     """
-    This message contains data reltaing to template matches used for calculating the lens correction transform.
+    This message contains data relating to template matches used for calculating the lens correction transform.
     """
 
     matches: List[TemplateMatchContainer] = Field(
