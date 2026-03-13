@@ -1,8 +1,62 @@
+from enum import StrEnum
+
 from pigeon import BaseMessage
 from typing import Mapping, Dict, Any, Optional, Tuple
 from datetime import datetime
 from pydantic import Field
 from .tilt import TiltMetadata
+
+
+class MontageState(StrEnum):
+    """Lifecycle states for montage acquisition."""
+
+    STARTED = "started"
+    IN_PROGRESS = "in_progress"
+    PAUSED = "paused"
+    RESUMED = "resumed"
+    CANCELLED = "cancelled"
+    COMPLETED = "completed"
+    ERROR = "error"
+
+
+class Status(TiltMetadata):
+    """Published per-tile and on lifecycle transitions during montage acquisition."""
+
+    montage_id: str = Field(description="The unique montage ID.")
+    state: MontageState = Field(description="Current montage lifecycle state.")
+
+    current_tile: int = Field(
+        default=0, description="1-based tile index, 0 before first tile."
+    )
+    total_tiles: int = Field(
+        default=0, description="Total planned tiles in this montage."
+    )
+
+    duration_seconds: Optional[float] = Field(
+        default=None, description="Elapsed seconds since montage start."
+    )
+    avg_cycle_time_ms: Optional[float] = Field(
+        default=None, description="Mean cycle time of last 10 tiles in ms."
+    )
+    stage_move_time_ms: Optional[float] = Field(
+        default=None, description="Last tile's stage move time in ms."
+    )
+    capture_time_ms: Optional[float] = Field(
+        default=None, description="Last tile's image capture time in ms."
+    )
+    throughput_tiles_per_min: Optional[float] = Field(
+        default=None, description="Current throughput in tiles per minute."
+    )
+    estimated_completion: Optional[datetime] = Field(
+        default=None, description="Estimated completion time (UTC)."
+    )
+
+    current_position: Optional[Tuple[int, int]] = Field(
+        default=None, description="Current stage position [x, y] in nm."
+    )
+    error_message: Optional[str] = Field(
+        default=None, description="Error description when state is ERROR."
+    )
 
 
 class Tile(BaseMessage):

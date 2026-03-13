@@ -46,6 +46,7 @@ topics = {
     "ui.run": ui.Run,
     "ui.setup": ui.Setup,
     "montage.complete": montage.Complete,
+    "montage.status": montage.Status,
     "qc.status": qc.Status,
     "roi.load": roi.LoadROI,
     "roi.create": roi.CreateROI,
