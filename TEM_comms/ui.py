@@ -36,6 +36,10 @@ class Run(BaseMessage):
     cancel: bool = Field(
         default=False, description="Return to preview mode from a failure state."
     )
+    survey: bool = Field(
+        default=False,
+        description="Run a low-mag survey acquisition using aperture size from config.",
+    )
 
 
 class Setup(BaseMessage):
@@ -90,3 +94,4 @@ class Setup(BaseMessage):
     def check_mag(self):
         assert (self.mag_mode is None) == (self.mag is None)
         return self
+
