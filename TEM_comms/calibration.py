@@ -1,5 +1,5 @@
 from pigeon import BaseMessage
-from typing import Mapping
+from typing import Mapping, Optional
 from pydantic import Field
 
 
@@ -39,4 +39,16 @@ class Centroid(BaseMessage):
     )
     y: int = Field(
         description="The stage coordinate system Y axis location of the centroid."
+    )
+    semi_major_nm: Optional[int] = Field(
+        default=None,
+        description="Semi-major axis of the fitted aperture ellipse in nanometers.",
+    )
+    semi_minor_nm: Optional[int] = Field(
+        default=None,
+        description="Semi-minor axis of the fitted aperture ellipse in nanometers.",
+    )
+    orientation_angle: Optional[float] = Field(
+        default=None,
+        description="Orientation angle of the major axis in radians, relative to stage +X axis.",
     )
