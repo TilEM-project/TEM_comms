@@ -52,6 +52,8 @@ topics = {
     "roi.create": roi.CreateROI,
     "roi.current": roi.ROI,
     "roi.status": roi.ROIStatus,
+    "roi.queue.status": roi.QueueStatus,
+    "roi.queue.update": roi.QueueUpdate,
     "montage.minimaps": montage.Minimaps,
     "calibration.resolution": calibration.Resolution,
     "calibration.centroid": calibration.Centroid,

@@ -4,9 +4,9 @@ from pydantic import Field
 
 
 class TiltMetadata(BaseMessage):
-    """Shared tilt series metadata fields.
-
-    Inherited by any message that reports per-acquisition tilt state.
+    """
+    Shared tilt series metadata fields inherited by any message that
+    reports per-acquisition tilt state.
     """
 
     tilt_angle: Optional[float] = Field(
@@ -15,13 +15,14 @@ class TiltMetadata(BaseMessage):
     )
     tilt_series_id: Optional[str] = Field(
         default=None,
-        description="Identifier grouping acquisitions in the same tilt series.",
+        description="The identifier grouping acquisitions in the same tilt series.",
+        examples=["ts_a1b2c3d4e5f6"],
     )
     tilt_index: Optional[int] = Field(
         default=None,
-        description="0-based position of this acquisition in the tilt series.",
+        description="The 0-based position of this acquisition in the tilt series.",
     )
     tilt_total: Optional[int] = Field(
         default=None,
-        description="Total number of tilt angles in the series.",
+        description="The total number of tilt angles in the series.",
     )
