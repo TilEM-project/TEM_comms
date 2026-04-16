@@ -9,6 +9,16 @@ def test_run():
     assert not msg.montage
 
 
+def test_run_retry_field():
+
+    msg = Run()
+    assert msg.retry is False
+
+    msg = Run(retry=True)
+    assert msg.retry is True
+    assert msg.resume is False
+
+
 def test_setup():
     with pytest.raises(ValidationError):
         Setup(mag_mode="LOWMAG")
