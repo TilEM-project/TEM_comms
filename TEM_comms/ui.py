@@ -32,7 +32,14 @@ class Run(BaseMessage):
     pause: bool = Field(
         default=False, description="Pause imaging during the current montage, then resume when ready."
     )
-    resume: bool = Field(default=False, description="Resume from a failure state.")
+    resume: bool = Field(
+        default=False,
+        description="Resume a paused montage. For retrying after a failure, use the retry field.",
+    )
+    retry: bool = Field(
+        default=False,
+        description="Retry the current state machine from a failure state.",
+    )
     cancel: bool = Field(
         default=False, description="Return to preview mode from a failure state."
     )
