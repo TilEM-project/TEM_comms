@@ -11,6 +11,11 @@ class TileMetadata(BaseMessage):
         description="The montage ID. If a zero length string, the tile is for UI display or calibration purposes only.",
         examples=["4330c7cf-e45b-4950-89cf-82dc0f815fe9"],
     )
+    roi_id: Optional[str] = Field(
+        default=None,
+        description="The ROI ID this tile belongs to.",
+        examples=["ROI_4_20260413T205135"],
+    )
     row: int = Field(
         description="The row of the montage where the tile was captured.", examples=[5]
     )

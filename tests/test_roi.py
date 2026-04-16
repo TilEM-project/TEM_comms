@@ -129,3 +129,39 @@ def test_queue_update_remove_and_reorder():
     qu = QueueUpdate(remove=["montage_1"], reorder=["montage_3", "montage_2"])
     assert qu.remove == ["montage_1"]
     assert qu.reorder == ["montage_3", "montage_2"]
+
+
+def test_create_roi_overlap_optional():
+    roi = CreateROI(
+        vertices=[Vertex(x=0, y=0), Vertex(x=100, y=100)],
+        rotation_angle=0.0,
+        montage_id="test",
+    )
+    assert roi.overlap is None
+
+
+def test_create_roi_overlap_set():
+    roi = CreateROI(
+        vertices=[Vertex(x=0, y=0), Vertex(x=100, y=100)],
+        rotation_angle=0.0,
+        montage_id="test",
+        overlap=25,
+    )
+    assert roi.overlap == 25
+
+
+def test_create_roi_overlap_validation():
+    with pytest.raises(Exception):
+        CreateROI(
+            vertices=[Vertex(x=0, y=0), Vertex(x=100, y=100)],
+            rotation_angle=0.0,
+            montage_id="test",
+            overlap=150,
+        )
+    with pytest.raises(Exception):
+        CreateROI(
+            vertices=[Vertex(x=0, y=0), Vertex(x=100, y=100)],
+            rotation_angle=0.0,
+            montage_id="test",
+            overlap=-5,
+        )
