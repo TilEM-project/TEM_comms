@@ -42,6 +42,15 @@ class ROI(BaseMessage):
     queue_position: Optional[int] = Field(
         None, description="Position in queue, None means set as current"
     )
+    overlap: Optional[int] = Field(
+        default=None,
+        ge=0,
+        le=100,
+        description=(
+            "Per-ROI tile overlap percentage (0-100). When set, overrides "
+            "the Acquisition default for this ROI's montages."
+        ),
+    )
 
 
 class LoadROI(BaseMessage):
