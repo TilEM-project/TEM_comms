@@ -10,7 +10,7 @@ class Edit(BaseMessage):
 
     roi_id: str = Field(description="The ROI id to edit.")
     roi_pos_x: int = Field(description="The new X position of the ROI in nanometers.")
-    roi_pox_y: int = Field(description="The new Y position of the ROI in nanometers.")
+    roi_pos_y: int = Field(description="The new Y position of the ROI in nanometers.")
     roi_width: int = Field(description="The new width of the ROI in nanometers.")
     roi_height: int = Field(description="The new height of the ROI in nanometers.")
     roi_angle: float = Field(description="The new angle to rotate the ROI in radians.")
@@ -64,10 +64,10 @@ class Setup(BaseMessage):
         default=False, description="Collect and generate a lens correction."
     )
     acquire_brightfield: bool = Field(
-        default=False, description="Acquire a darkfield image."
+        default=False, description="Acquire a brightfield image."
     )
     acquire_darkfield: bool = Field(
-        default=False, description="Acquire a brightfield image."
+        default=False, description="Acquire a darkfield image."
     )
     center_beam: bool = Field(
         default=False, description="Center the beam in the image frame."

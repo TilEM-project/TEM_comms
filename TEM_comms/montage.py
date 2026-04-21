@@ -84,7 +84,9 @@ class Complete(TiltMetadata):
     start_time: datetime = Field(
         description="The timestamp when the montage was started."
     )
-    pixel_size: float = Field(description="The average size ofee")
+    pixel_size: float = Field(
+        description="The average pixel size of the montage in nanometers."
+    )
     rotation_angle: float = Field(
         description="The necessary tile rotation in radians to line up the right-handed image coordinate system with the Stage x-y coordinate system."
     )
