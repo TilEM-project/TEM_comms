@@ -1,7 +1,9 @@
 from pigeon import BaseMessage
-from typing import List, Tuple, Optional
+from typing import List, Optional
 from enum import Enum
-from pydantic import Field
+from pydantic import Field, model_validator
+from .acquisition_type import AcquisitionType
+from .calibration_ops import CalibrationOptions, TiltCalibrationOptions
 from .tilt import TiltMetadata
 
 
@@ -51,6 +53,21 @@ class ROI(BaseMessage):
             "the Acquisition default for this ROI's montages."
         ),
     )
+    acquisition_type: AcquisitionType = Field(
+        default=AcquisitionType.MONTAGE,
+        description="The acquisition strategy for this ROI.",
+    )
+    calibrations: CalibrationOptions = Field(
+        default_factory=CalibrationOptions,
+        description="Per-ROI calibrations run once before this ROI's acquisition begins.",
+    )
+    tilt_calibrations: Optional[TiltCalibrationOptions] = Field(
+        default=None,
+        description=(
+            "Per-tilt-step calibrations. Only valid for TILT_SERIES — sample-tilting "
+            "modes only. Validation rejects this field on non-tilt acquisition types."
+        ),
+    )
 
 
 class LoadROI(BaseMessage):
@@ -92,6 +109,24 @@ class CreateROI(ROI):
     roi_name: Optional[str] = Field(
         default=None, description="The human-readable ROI name for queue display."
     )
+
+    @model_validator(mode="after")
+    def _check_acquisition_type_consistency(self):
+        """Enforce the acquisition_type ↔ tilt_calibrations / tilt_angles invariants."""
+        if self.tilt_calibrations is not None and self.acquisition_type != AcquisitionType.TILT_SERIES:
+            raise ValueError(
+                "tilt_calibrations may only be set when acquisition_type == TILT_SERIES"
+            )
+
+        n_angles = len(self.tilt_angles) if self.tilt_angles is not None else 1
+
+        if self.acquisition_type == AcquisitionType.TILT_SERIES and n_angles <= 1:
+            raise ValueError("TILT_SERIES requires len(tilt_angles) > 1")
+        if self.acquisition_type in (AcquisitionType.LENS_CORRECTION, AcquisitionType.SURVEY) and n_angles > 1:
+            raise ValueError(
+                f"{self.acquisition_type.value} does not support multiple tilt angles"
+            )
+        return self
 
 
 class ROIEntryStatus(str, Enum):
