@@ -4,9 +4,9 @@ import pytest
 
 
 def test_run():
-    Run(montage=True)
+    Run(start=True)
     msg = Run()
-    assert not msg.montage
+    assert not msg.start
 
 
 def test_run_retry_field():
@@ -19,13 +19,13 @@ def test_run_retry_field():
     assert msg.resume is False
 
 
-def test_setup():
-    with pytest.raises(ValidationError):
-        Setup(mag_mode="LOWMAG")
+def test_setup_defaults_all_false():
+    msg = Setup()
+    assert msg.auto_focus is False
+    assert msg.lens_correction is False
+    assert msg.survey is False
 
-    with pytest.raises(ValidationError):
-        Setup(mag=10)
 
-    Setup()
-    Setup(mag_mode="LOWMAG", mag=1)
-    Setup(mag_mode="MAG", mag=1)
+def test_setup_survey_flag():
+    msg = Setup(survey=True)
+    assert msg.survey is True
