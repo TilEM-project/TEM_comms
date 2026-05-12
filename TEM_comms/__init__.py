@@ -42,7 +42,6 @@ topics = {
     "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,
     "tile.matches": tile.Matches,
     "tile.template_matches": tile.TemplateMatches,
-    "ui.edit": ui.Edit,
     "ui.run": ui.Run,
     "ui.setup": ui.Setup,
     "montage.complete": montage.Complete,
@@ -60,4 +59,5 @@ topics = {
     "state.current": state.Current,
     "state.change": state.Change,
     "lens_correction.transform": lens_correction.Transform,
+    "lens_correction.setup": lens_correction.LensCorrectionSetup,
 }
