@@ -47,6 +47,7 @@ topics = {
     "montage.complete": montage.Complete,
     "montage.status": montage.Status,
     "qc.status": qc.Status,
+    "qc.tile": qc.Tile,
     "roi.load": roi.LoadROI,
     "roi.create": roi.CreateROI,
     "roi.current": roi.ROI,
