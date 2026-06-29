@@ -1,36 +1,26 @@
+from pydantic import Field
+
 from pigeon import BaseMessage
-from typing import Optional, Literal, List
-from pydantic import model_validator, Field
 
-
-class Edit(BaseMessage):
-    """
-    This message is used to edit existing ROIs in the ROI queue.
-    """
-
-    roi_id: str = Field(description="The ROI id to edit.")
-    roi_pos_x: int = Field(description="The new X position of the ROI in nanometers.")
-    roi_pos_y: int = Field(description="The new Y position of the ROI in nanometers.")
-    roi_width: int = Field(description="The new width of the ROI in nanometers.")
-    roi_height: int = Field(description="The new height of the ROI in nanometers.")
-    roi_angle: float = Field(description="The new angle to rotate the ROI in radians.")
+from .calibration_ops import CalibrationOptions
 
 
 class Run(BaseMessage):
     """
-    This message is used start and stop automated image acquisition.
+    This message is used to control the start, stop, and pause of the acquisition of ROIs. It also contains some fields for retrying or canceling an acquisition in the event of a failure.
     """
 
-    montage: bool = Field(
+    start: bool = Field(
         default=False,
-        description="Begin collecting montages according to the ROI queue.",
+        description="Begin acquiring ROIs according to the ROI queue.",
     )
     abort_now: bool = Field(default=False, description="Stop imaging immediately.")
     abort_at_end: bool = Field(
         default=False, description="Stop imaging after the current montage is complete."
     )
     pause: bool = Field(
-        default=False, description="Pause imaging during the current montage, then resume when ready."
+        default=False,
+        description="Pause imaging during the current montage, then resume when ready.",
     )
     resume: bool = Field(
         default=False,
@@ -43,62 +33,12 @@ class Run(BaseMessage):
     cancel: bool = Field(
         default=False, description="Return to preview mode from a failure state."
     )
+
+
+class Setup(CalibrationOptions):
+    """This message is utilized to setup a microscope in a semi-automated manner. Each of the fields in this message instructs the system to run an individual setup routine."""
+
     survey: bool = Field(
         default=False,
-        description="Run a low-mag survey acquisition using aperture size from config.",
+        description="Trigger a low-magnification survey acquisition with bootstrap-built ROI.",
     )
-
-
-class Setup(BaseMessage):
-    """
-    This message is utilized to setup a microscope in a semi-automated manner. Each of the fields in this message instructs the system to run an individual setup routine.
-    """
-
-    auto_focus: bool = Field(
-        default=False, description="Automatically focus the microscope."
-    )
-    auto_exposure: bool = Field(
-        default=False, description="Optimize the camera exposure."
-    )
-    lens_correction: bool = Field(
-        default=False, description="Collect and generate a lens correction."
-    )
-    acquire_brightfield: bool = Field(
-        default=False, description="Acquire a brightfield image."
-    )
-    acquire_darkfield: bool = Field(
-        default=False, description="Acquire a darkfield image."
-    )
-    center_beam: bool = Field(
-        default=False, description="Center the beam in the image frame."
-    )
-    spread_beam: bool = Field(default=False, description="Spread the beam.")
-    find_aperture: bool = Field(
-        default=False, description="Find and move to the aperture centroid."
-    )
-    calibrate_resolution: bool = Field(
-        default=False,
-        description="Calibrate the resolution of the microscope at the current mag level.",
-    )
-    grid: Optional[int] = Field(
-        default=None, description="Change to the specified grid."
-    )
-    mag_mode: Optional[Literal["MAG", "LOWMAG"]] = Field(
-        default=None,
-        description='Change to the specified mag mode. The "mag" field must also be specified.',
-    )
-    mag: Optional[int] = Field(
-        default=None,
-        description='Change to the specified magnification. "mag_mode" must also be specified.',
-    )
-
-    tilt_angles: Optional[List[float]] = Field(
-        default=None,
-        description="List of tilt angles in degrees for tilt tomography series.",
-    )
-
-    @model_validator(mode="after")
-    def check_mag(self):
-        assert (self.mag_mode is None) == (self.mag is None)
-        return self
-
