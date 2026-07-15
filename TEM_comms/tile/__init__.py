@@ -135,3 +135,19 @@ class Processed(TileMetadata):
         description="The path where the processed tile is stored.",
         examples=["/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141.tiff"],
     )
+
+
+class Pyramid(TileMetadata):
+    """
+    This message contains the paths where an image pyramid has been saved.
+    """
+
+    paths: dict[int, str] = Field(
+        description="A mapping of MIP levels to image storage paths.",
+        examples=[
+            {
+                1: "/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141-MIP1.tif",
+                2: "/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141-MIP2.tiff",
+            }
+        ],
+    )
