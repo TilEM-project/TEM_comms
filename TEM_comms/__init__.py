@@ -37,6 +37,7 @@ topics = {
     "tile.mini": tile.Mini,
     "tile.processed": tile.Processed,
     "tile.raw": tile.Raw,
+    "tile.pyramid": tile.Pyramid,
     "tile.statistics.focus": tile.statistics.Focus,
     "tile.statistics.histogram": tile.statistics.Histogram,
     "tile.statistics.min_max_mean": tile.statistics.MinMaxMean,

@@ -147,7 +147,7 @@ class Pyramid(TileMetadata):
         examples=[
             {
                 1: "/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141-MIP1.tif",
-                2: "/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141-MIP2.tiff",
+                2: "/storage/processed/69005602-15b0-4407-bf5b-4bddd6629141-MIP2.tif",
             }
         ],
     )
