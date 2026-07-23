@@ -8,9 +8,6 @@ from TEM_comms import topics
 def test_setup_defaults():
     msg = LensCorrectionSetup(center=Vertex(x=0, y=0))
     assert msg.enabled is False
-    # Grid geometry defaults to None on the wire = "use the acquisition
-    # service's configured default" (PyTEM Root.lc_grid_*). Explicit values
-    # still override (see test_setup_explicit_values).
     assert msg.tiles_x is None
     assert msg.tiles_y is None
     assert msg.overlap_pct is None
