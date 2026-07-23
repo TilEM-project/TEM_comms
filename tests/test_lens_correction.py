@@ -8,9 +8,12 @@ from TEM_comms import topics
 def test_setup_defaults():
     msg = LensCorrectionSetup(center=Vertex(x=0, y=0))
     assert msg.enabled is False
-    assert msg.tiles_x == 10
-    assert msg.tiles_y == 10
-    assert msg.overlap_pct == 60.0
+    # Grid geometry defaults to None on the wire = "use the acquisition
+    # service's configured default" (PyTEM Root.lc_grid_*). Explicit values
+    # still override (see test_setup_explicit_values).
+    assert msg.tiles_x is None
+    assert msg.tiles_y is None
+    assert msg.overlap_pct is None
     assert msg.every_n_rois == 0
     assert msg.every_n_tilt_steps == 0
 
@@ -45,7 +48,7 @@ def test_topic_registered():
 
 
 def test_transform_unchanged():
-    msg = Transform(transform="abc")
+    msg = Transform(transform="abc", montage_id="lc-0")
     assert msg.transform == "abc"
 
 
@@ -60,3 +63,16 @@ def test_setup_roundtrip():
         every_n_tilt_steps=4,
     )
     assert LensCorrectionSetup.deserialize(msg.serialize()) == msg
+
+
+def test_transform_is_solve_result():
+    assert topics["lens_correction.transform"] is Transform
+    t = Transform(transform="b64data", montage_id="lc-1", ok=True,
+                  residual_mean_px=0.21, residual_std_px=1.9, n_matches=4200)
+    assert t.montage_id == "lc-1" and t.ok is True and t.n_matches == 4200
+
+
+def test_transform_defaults_backward_compatible():
+    # montage_id is now required; ok/residual default so existing readers still parse.
+    t = Transform(transform="b64", montage_id="lc-2")
+    assert t.ok is True and t.residual_mean_px == 0.0 and t.n_matches == 0
