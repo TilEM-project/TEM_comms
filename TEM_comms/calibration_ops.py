@@ -35,6 +35,10 @@ class CalibrationOptions(BaseMessage):
         default=False,
         description="Calibrate the resolution of the microscope at the current mag level.",
     )
+    characterize_tilt_focus: bool = Field(
+        default=False,
+        description="Characterize the tilt-focus in-focus band width per tilt angle.",
+    )
 
 
 class TiltCalibrationOptions(BaseMessage):
