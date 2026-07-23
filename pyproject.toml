@@ -24,7 +24,7 @@ classifiers = [
 msgs = "TEM_comms:topics"
 
 [project.urls]
-Homepage = "https://github.com/AllenInstitute/TEM_comms"
+Homepage = "https://github.com/TilEM-project/TEM_comms"
 Documentation = "https://alleninstitute.github.io/TEM_architecture/topics.html"
-Repository = "https://github.com/AllenInstitute/TEM_comms"
-Issues = "https://github.com/AllenInstitute/TEM_comms/issues"
+Repository = "https://github.com/TilEM-project/TEM_comms"
+Issues = "https://github.com/TilEM-project/TEM_comms/issues"
