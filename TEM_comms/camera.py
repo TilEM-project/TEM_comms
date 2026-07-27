@@ -62,3 +62,6 @@ class Status(BaseMessage):
     device_model_id: str = Field(description="The device model identifier.")
     device_sn: str = Field(description="The camera serial number.")
     bit_depth: int | str = Field(description="The bit depth of the camera sensor.")
+    saved_bit_depth: int = Field(
+        description="The bit depth images are written to disk at."
+    )
