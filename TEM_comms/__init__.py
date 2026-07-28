@@ -33,6 +33,7 @@ topics = {
     "stage.rotation.status": stage.rotation.Status,
     "stage.transfer.command": stage.transfer.Command,
     "stage.transfer.status": stage.transfer.Status,
+    "stage.absolute": stage.Absolute,
     "tile.preview": tile.Preview,
     "tile.mini": tile.Mini,
     "tile.processed": tile.Processed,
