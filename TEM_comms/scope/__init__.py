@@ -29,6 +29,10 @@ class Command(BaseMessage):
         default=None,
         description="The desired beam shift values, or None to keep the current value.",
     )
+    beam_tilt: Optional[Tuple[int, int]] = Field(
+        default=None,
+        description="The desired beam tilt values, or None to keep the current value.",
+    )
     spot_size: Optional[int] = Field(
         default=None,
         description="The desired spot size, or None to keep the current value.",
@@ -62,6 +66,10 @@ class Status(BaseMessage):
     )
     brightness: int = Field(description="The current beam spread.")
     beam_offset: Tuple[int, int] = Field(description="The current beam shift values.")
+    beam_tilt: Optional[Tuple[int, int]] = Field(
+        default=None,
+        description="The current beam tilt values, or None if unavailable.",
+    )
     spot_size: int = Field(description="The current spot size.")
     screen: Literal["up", "down"] | None = Field(
         description='Whether the viewscreen is currently "up", "down", or None for an unknown position.'
